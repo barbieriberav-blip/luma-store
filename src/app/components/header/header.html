@@ -1,0 +1,62 @@
+<header class="navbar-dark-custom py-3 px-4">
+  <div class="container-fluid d-flex align-items-center justify-content-between">
+    
+    <!-- LADO IZQUIERDO: MARCA / LOGO -->
+    <a routerLink="/" class="navbar-brand fw-bold fs-4 text-white text-decoration-none">
+      Luma<span class="text-white-50">.</span>
+    </a>
+
+    <!-- CENTRO: BARRA DE BÚSQUEDA TIPO PÍLDORA -->
+    <div class="search-container mx-auto">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input 
+          type="text" 
+          placeholder="Buscar ropa, hoodies, pantalones..." 
+          [(ngModel)]="searchQuery"
+          (input)="onSearch()" />
+      </div>
+    </div>
+
+    <!-- LADO DERECHO: WISHLIST, CARRITO Y USUARIO -->
+    <div class="d-flex align-items-center gap-3">
+      
+      <!-- Corazón Favoritos -->
+      <button class="nav-icon-btn" title="Favoritos">
+        ♥
+        <span class="counter-badge" *ngIf="wishlistCount > 0">{{ wishlistCount }}</span>
+      </button>
+
+      <!-- Carrito -->
+      <button class="nav-icon-btn" (click)="openCartDrawer()" title="Carrito">
+        🛍️
+        <span class="counter-badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
+      </button>
+
+      <!-- Botón Usuario con Menú Logout -->
+      <div class="dropdown-wrapper" *ngIf="currentUser; else loginBtn">
+        <button class="user-btn" (click)="toggleUserMenu()">
+          <span class="user-icon">👤</span>
+          <span class="user-text">{{ currentUser.name }}</span>
+          <span class="arrow-icon">▾</span>
+        </button>
+
+        <div class="custom-dropdown-menu" *ngIf="isUserMenuOpen">
+          <div class="dropdown-user-info">
+            <span class="user-name">{{ currentUser.name }}</span>
+            <span class="user-email">{{ currentUser.email }}</span>
+          </div>
+          <button class="logout-btn" (click)="logout()">
+            Cerrar Sesión
+          </button>
+        </div>
+      </div>
+
+      <ng-template #loginBtn>
+        <a routerLink="/auth" class="login-link-btn">Iniciar Sesión</a>
+      </ng-template>
+
+    </div>
+
+  </div>
+</header>

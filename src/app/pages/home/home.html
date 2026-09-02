@@ -1,0 +1,209 @@
+<div class="home-dark-container">
+  
+  <!-- BANNER TIPO CARRUSEL INFINITO (MARQUEE) -->
+  <div class="marquee-section">
+    <div class="marquee-track">
+      <!-- Bloque 1 -->
+      <div class="marquee-items">
+        <div class="banner-card">
+          <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800" alt="Arracadas">
+          <div class="banner-badge">ACCESORIOS</div>
+          <div class="banner-info">
+            <h6>Arracadas Doradas</h6>
+            <p>$260 · Baño de Oro</p>
+          </div>
+        </div>
+
+        <div class="banner-card">
+          <img src="https://images.unsplash.com/photo-1598554747436-c9293d6a588f?w=800" alt="Blusa Satinada">
+          <div class="banner-badge">NUEVO</div>
+          <div class="banner-info">
+            <h6>Blusa Satinada</h6>
+            <p>$549 · Tallas 6-18</p>
+          </div>
+        </div>
+
+        <div class="banner-card">
+          <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800" alt="Jeans Wide Leg">
+          <div class="banner-badge">TRENDING</div>
+          <div class="banner-info">
+            <h6>Jeans Wide Leg</h6>
+            <p>$899 · Tallas 6-18</p>
+          </div>
+        </div>
+
+        <div class="banner-card">
+          <img src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=800" alt="Hoodie Essential">
+          <div class="banner-badge">HOODIES</div>
+          <div class="banner-info">
+            <h6>Hoodie Essential</h6>
+            <p>$799 · 5 Colores</p>
+          </div>
+        </div>
+
+        <div class="banner-card">
+          <img src="https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=800" alt="Cargo Wide">
+          <div class="banner-badge">PANTALONES</div>
+          <div class="banner-info">
+            <h6>Cargo Wide</h6>
+            <p>$890 · Tallas 6-18</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bloque 2 (Duplicado para loop infinito fluido) -->
+      <div class="marquee-items" aria-hidden="true">
+        <div class="banner-card">
+          <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800" alt="Arracadas">
+          <div class="banner-badge">ACCESORIOS</div>
+          <div class="banner-info">
+            <h6>Arracadas Doradas</h6>
+            <p>$260 · Baño de Oro</p>
+          </div>
+        </div>
+
+        <div class="banner-card">
+          <img src="https://images.unsplash.com/photo-1598554747436-c9293d6a588f?w=800" alt="Blusa Satinada">
+          <div class="banner-badge">NUEVO</div>
+          <div class="banner-info">
+            <h6>Blusa Satinada</h6>
+            <p>$549 · Tallas 6-18</p>
+          </div>
+        </div>
+
+        <div class="banner-card">
+          <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800" alt="Jeans Wide Leg">
+          <div class="banner-badge">TRENDING</div>
+          <div class="banner-info">
+            <h6>Jeans Wide Leg</h6>
+            <p>$899 · Tallas 6-18</p>
+          </div>
+        </div>
+
+        <div class="banner-card">
+          <img src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=800" alt="Hoodie Essential">
+          <div class="banner-badge">HOODIES</div>
+          <div class="banner-info">
+            <h6>Hoodie Essential</h6>
+            <p>$799 · 5 Colores</p>
+          </div>
+        </div>
+
+        <div class="banner-card">
+          <img src="https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=800" alt="Cargo Wide">
+          <div class="banner-badge">PANTALONES</div>
+          <div class="banner-info">
+            <h6>Cargo Wide</h6>
+            <p>$890 · Tallas 6-18</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BARRA DE CATEGORÍAS (PÍLDORAS) -->
+  <div class="categories-bar d-flex justify-content-center gap-2 flex-wrap py-3 px-3">
+    <button class="cat-pill" [class.active]="selectedCategory === 'Todos'" (click)="filterCategory('Todos')">Todos</button>
+    <button class="cat-pill" [class.active]="selectedCategory === 'Tops'" (click)="filterCategory('Tops')">Tops</button>
+    <button class="cat-pill" [class.active]="selectedCategory === 'Pantalones'" (click)="filterCategory('Pantalones')">Pantalones</button>
+    <button class="cat-pill" [class.active]="selectedCategory === 'Shorts'" (click)="filterCategory('Shorts')">Shorts</button>
+    <button class="cat-pill" [class.active]="selectedCategory === 'Sudaderas'" (click)="filterCategory('Sudaderas')">Hoodies</button>
+    <button class="cat-pill" [class.active]="selectedCategory === 'Suéteres'" (click)="filterCategory('Suéteres')">Suéteres</button>
+    <button class="cat-pill" [class.active]="selectedCategory === 'Cardigans'" (click)="filterCategory('Cardigans')">Cardigans</button>
+    <button class="cat-pill" [class.active]="selectedCategory === 'Calcetines'" (click)="filterCategory('Calcetines')">Calcetines</button>
+    <button class="cat-pill" [class.active]="selectedCategory === 'Calzado'" (click)="filterCategory('Calzado')">Calzado</button>
+    <button class="cat-pill" [class.active]="selectedCategory === 'Accesorios'" (click)="filterCategory('Accesorios')">Accesorios</button>
+  </div>
+
+  <!-- GRID DE PRODUCTOS -->
+  <div class="container py-4">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+      <div class="col" *ngFor="let product of filteredProducts">
+        <div class="product-item-card">
+          
+          <div class="image-wrapper position-relative">
+            <!-- Badge de descuento si tiene -->
+            <span *ngIf="product.discountBadge" class="product-tag-badge">
+              {{ product.discountBadge }}
+            </span>
+
+            <!-- Botón de Wishlist (Corazón) -->
+            <button 
+              class="fav-circle-btn" 
+              [class.active]="wishlistService.isInWishlist(product.id)"
+              (click)="toggleFav(product, $event)"
+              title="Favoritos">
+              ♥
+            </button>
+
+            <!-- Imagen que lleva al producto -->
+            <a [routerLink]="['/product', product.id]">
+              <img [src]="product.images[0]" [alt]="product.name" class="product-img">
+            </a>
+
+            <!-- Botón Quick View al pasar el mouse -->
+            <button class="quick-hover-btn" (click)="openQuickView(product, $event)">
+              Vista Rápida
+            </button>
+          </div>
+
+          <div class="product-details mt-3">
+            <span class="category-name">{{ product.category }}</span>
+            <h6 class="product-title text-truncate">
+              <a [routerLink]="['/product', product.id]">{{ product.name }}</a>
+            </h6>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+              <div class="price-box">
+                <span class="current-price">${{ product.price }}</span>
+                <del *ngIf="product.originalPrice" class="old-price ms-2">${{ product.originalPrice }}</del>
+              </div>
+              <button class="btn-add-mini" (click)="quickAddToCart(product)">
+                + Agregar
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL QUICK VIEW -->
+  <div class="quick-modal-backdrop" *ngIf="quickViewProduct" (click)="closeQuickView()">
+    <div class="quick-modal-box" (click)="$event.stopPropagation()">
+      <button class="close-x-btn" (click)="closeQuickView()">✕</button>
+      <div class="row g-4 align-items-center">
+        <div class="col-md-5">
+          <img [src]="quickViewProduct.images[0]" [alt]="quickViewProduct.name" class="img-fluid rounded-4">
+        </div>
+        <div class="col-md-7">
+          <span class="text-uppercase text-muted small fw-bold">{{ quickViewProduct.category }}</span>
+          <h4 class="text-white fw-bold mt-1">{{ quickViewProduct.name }}</h4>
+          <div class="my-2">
+            <span class="fs-4 fw-bold text-white">${{ quickViewProduct.price }}</span>
+            <del *ngIf="quickViewProduct.originalPrice" class="text-muted ms-2">${{ quickViewProduct.originalPrice }}</del>
+          </div>
+          <p class="text-secondary small">{{ quickViewProduct.description }}</p>
+
+          <div class="mt-3">
+            <label class="text-white-50 small d-block mb-1">Talla:</label>
+            <div class="d-flex gap-2 flex-wrap">
+              <button 
+                *ngFor="let s of quickViewProduct.sizes" 
+                class="size-mini-btn" 
+                [class.active]="selectedQuickSize === s"
+                (click)="selectedQuickSize = s">
+                {{ s }}
+              </button>
+            </div>
+          </div>
+
+          <button class="btn btn-light w-100 rounded-pill py-2 mt-4 fw-semibold" (click)="addQuickViewToCart()">
+            Agregar al Carrito
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

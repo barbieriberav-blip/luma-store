@@ -1,0 +1,73 @@
+<div class="container py-5" *ngIf="product; else notFound">
+  <div class="row g-5">
+    <!-- Galería -->
+    <div class="col-lg-6">
+      <img [src]="selectedImage" [alt]="product.name" class="img-fluid rounded-4 shadow-sm w-100 mb-3" style="max-height: 500px; object-fit: cover;">
+      <div class="d-flex gap-2" *ngIf="product.images.length > 1">
+        <img *ngFor="let img of product.images" [src]="img" (click)="selectedImage = img" class="rounded border cursor-pointer" style="width: 80px; height: 80px; object-fit: cover; cursor: pointer;">
+      </div>
+    </div>
+
+    <!-- Info del Producto -->
+    <div class="col-lg-6">
+      <span class="badge bg-light text-dark mb-2 border">{{ product.category }}</span>
+      <h2 class="fw-bold">{{ product.name }}</h2>
+      
+      <div class="d-flex align-items-center gap-3 my-3">
+        <span class="fs-3 fw-bold">${{ product.price | number:'1.2-2' }}</span>
+        <span *ngIf="product.originalPrice" class="text-muted text-decoration-line-through fs-5">${{ product.originalPrice | number:'1.2-2' }}</span>
+        <span *ngIf="product.discountPercent" class="badge bg-danger">-{{ product.discountPercent }}% OFF</span>
+      </div>
+
+      <p class="text-muted">{{ product.description }}</p>
+
+      <!-- Selector de Tallas -->
+      <div class="mb-4">
+        <label class="fw-semibold small d-block mb-2">Selecciona tu talla:</label>
+        <div class="btn-group">
+          <button *ngFor="let size of product.sizes" class="btn btn-sm" [class.btn-dark]="selectedSize === size" [class.btn-outline-dark]="selectedSize !== size" (click)="selectedSize = size">
+            {{ size }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Selector de Color -->
+      <div class="mb-4">
+        <label class="fw-semibold small d-block mb-2">Color seleccionado: <strong>{{ selectedColor }}</strong></label>
+        <div class="d-flex gap-2">
+          <button *ngFor="let col of product.colors" (click)="selectedColor = col.name" class="btn rounded-circle p-0 border" [style.background-color]="col.hex" style="width: 30px; height: 30px;" [title]="col.name"></button>
+        </div>
+      </div>
+
+      <!-- Cantidad y Botón de Compra -->
+      <div class="d-flex gap-3 align-items-center mb-4">
+        <div class="input-group" style="width: 120px;">
+          <button class="btn btn-outline-secondary" (click)="quantity = quantity > 1 ? quantity - 1 : 1">-</button>
+          <input type="text" class="form-control text-center" [value]="quantity" readonly>
+          <button class="btn btn-outline-secondary" (click)="quantity = quantity < product.stock ? quantity + 1 : quantity">+</button>
+        </div>
+        <button class="btn btn-dark flex-grow-1 py-2 fw-semibold" (click)="addToCart()">
+          <i class="bi bi-bag-plus me-2"></i>Agregar al Carrito
+        </button>
+      </div>
+
+      <!-- Especificaciones -->
+      <div class="border-top pt-4 mt-4">
+        <h6 class="fw-bold mb-3">Especificaciones Técnicas:</h6>
+        <ul class="list-group list-group-flush small">
+          <li class="list-group-item px-0 d-flex justify-content-between" *ngFor="let spec of product.specs | keyvalue">
+            <span class="text-muted">{{ spec.key }}:</span>
+            <span class="fw-semibold">{{ spec.value }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #notFound>
+  <div class="container py-5 text-center">
+    <h3>Producto no encontrado</h3>
+    <a routerLink="/" class="btn btn-dark mt-3">Volver al inicio</a>
+  </div>
+</ng-template>

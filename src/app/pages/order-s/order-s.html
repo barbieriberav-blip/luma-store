@@ -1,0 +1,24 @@
+<div class="container py-5 text-center">
+  <div class="card border-0 shadow-sm p-5 mx-auto" style="max-width: 600px;">
+    <i class="bi bi-check-circle-fill text-success display-1 mb-3"></i>
+    <h2 class="fw-bold">¡Gracias por tu compra en LUMA!</h2>
+    <p class="text-muted">Tu orden ha sido procesada con éxito y te enviaremos una notificación de envío.</p>
+
+    <div class="bg-light p-3 rounded my-4 text-start small" *ngIf="order">
+      <div class="d-flex justify-content-between mb-2">
+        <span class="text-muted">Número de Orden:</span>
+        <strong class="text-dark">{{ order.orderId }}</strong>
+      </div>
+      <div class="d-flex justify-content-between mb-2">
+        <span class="text-muted">Total Pagado:</span>
+        <strong class="text-dark">${{ order.total | number:'1.2-2' }}</strong>
+      </div>
+      <div class="d-flex justify-content-between">
+        <span class="text-muted">Método de Pago:</span>
+        <strong class="text-dark">{{ order.paymentMethod }}</strong>
+      </div>
+    </div>
+
+    <a routerLink="/" class="btn btn-dark py-2 px-4 fw-semibold">Seguir Comprando</a>
+  </div>
+</div>

@@ -1,0 +1,310 @@
+.home-dark-container {
+  background-color: #121214;
+  min-height: 100vh;
+  color: #ffffff;
+}
+
+/* --- CARRUSEL TIPO TICKER / MARQUEE --- */
+.marquee-section {
+  overflow: hidden;
+  padding: 24px 0 16px 0;
+  width: 100%;
+  position: relative;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marqueeScroll 28s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.marquee-items {
+  display: flex;
+  gap: 18px;
+  padding-right: 18px;
+}
+
+.banner-card {
+  position: relative;
+  width: 220px;
+  height: 290px;
+  border-radius: 20px;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.banner-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.banner-card:hover img {
+  transform: scale(1.05);
+}
+
+.banner-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: rgba(18, 18, 20, 0.75);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.banner-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 14px;
+  background: linear-gradient(to top, rgba(10, 10, 12, 0.92) 10%, transparent 100%);
+}
+
+.banner-info h6 {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.banner-info p {
+  margin: 2px 0 0 0;
+  font-size: 0.78rem;
+  color: #cbd5e1;
+}
+
+@keyframes marqueeScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* --- BOTONES DE CATEGORÍA EN PÍLDORA --- */
+.categories-bar {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cat-pill {
+  background: #1e1e24;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #9ca3af;
+  padding: 6px 18px;
+  border-radius: 50px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cat-pill:hover,
+.cat-pill.active {
+  background: #ffffff;
+  color: #121214;
+  border-color: #ffffff;
+}
+
+/* --- TARJETAS DE PRODUCTO DEL GRID --- */
+.product-item-card {
+  background: #18181c;
+  border-radius: 20px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.product-item-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.image-wrapper {
+  width: 100%;
+  height: 270px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.product-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.image-wrapper:hover .product-img {
+  transform: scale(1.04);
+}
+
+.product-tag-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #e11d48;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 50px;
+  z-index: 2;
+}
+
+.fav-circle-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(18, 18, 20, 0.65);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  z-index: 2;
+  transition: all 0.2s;
+}
+
+.fav-circle-btn.active,
+.fav-circle-btn:hover {
+  color: #e11d48;
+  background: #ffffff;
+}
+
+.quick-hover-btn {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  opacity: 0;
+  background: rgba(18, 18, 20, 0.85);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  z-index: 2;
+  white-space: nowrap;
+}
+
+.image-wrapper:hover .quick-hover-btn {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.category-name {
+  font-size: 0.72rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.product-title a {
+  color: #f3f4f6;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.current-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.old-price {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.btn-add-mini {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #f3f4f6;
+  border-radius: 50px;
+  padding: 4px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-add-mini:hover {
+  background: #ffffff;
+  color: #121214;
+}
+
+/* --- QUICK VIEW MODAL --- */
+.quick-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.quick-modal-box {
+  background: #18181c;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  max-width: 680px;
+  width: 100%;
+  padding: 28px;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+.close-x-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #2b2b32;
+  border: none;
+  color: #ffffff;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.size-mini-btn {
+  background: #2b2b32;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-radius: 50px;
+  padding: 4px 12px;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.size-mini-btn.active {
+  background: #ffffff;
+  color: #121214;
+}
