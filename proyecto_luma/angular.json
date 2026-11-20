@@ -1,0 +1,36 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "luma-angular": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "src/main.ts",
+            "index": "src/index.html",
+            "tsConfig": "tsconfig.app.json",
+            "assets": [{"glob":"**/*","input":"src/assets","output":"assets"}],
+            "styles": ["src/styles.css"],
+            "outputPath": "dist/luma-angular"
+          },
+          "configurations": {
+            "production": {"budgets":[{"type":"initial","maximumWarning":"1mb","maximumError":"2mb"}],"outputHashing":"all"},
+            "development": {"optimization":false,"extractLicenses":false,"sourceMap":true}
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {"production":{"buildTarget":"luma-angular:build:production"},"development":{"buildTarget":"luma-angular:build:development"}},
+          "defaultConfiguration": "development"
+        }
+      }
+    }
+  }
+}

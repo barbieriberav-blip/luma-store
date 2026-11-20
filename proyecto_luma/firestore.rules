@@ -1,0 +1,121 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signed() { return request.auth != null; }
+    function me() { return request.auth.uid; }
+    function admin() {
+      return signed() &&
+        exists(/databases/$(database)/documents/adminUsers/$(me())) &&
+        get(/databases/$(database)/documents/adminUsers/$(me())).data.enabled == true;
+    }
+    function own(uid) { return signed() && me() == uid; }
+    function text(v, maxSize) { return v is string && v.size() <= maxSize; }
+    function safeNumber(n) { return n is number && n >= 0 && n <= 1000000000; }
+
+    // Los permisos administrativos no son modificables por el navegador.
+    // Configura adminUsers/UID {enabled:true} desde Firebase Console.
+    match /adminUsers/{uid} {
+      allow get: if own(uid) || admin();
+      allow list: if admin();
+      allow create, update, delete: if false;
+    }
+
+    match /users/{uid} {
+      allow get: if own(uid) || admin();
+      allow list: if admin();
+      allow create: if own(uid)
+        && request.resource.data.keys().hasOnly(['id','name','email','role','phone','wishlist','addresses','created_at'])
+        && request.resource.data.id == uid
+        && request.resource.data.role == 'cliente'
+        && request.resource.data.email == request.auth.token.email
+        && text(request.resource.data.name,80)
+        && request.resource.data.wishlist is list
+        && request.resource.data.wishlist.size() == 0
+        && request.resource.data.addresses is list
+        && request.resource.data.addresses.size() == 0;
+      allow update: if own(uid)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name','wishlist','addresses'])
+        && request.resource.data.role == 'cliente'
+        && text(request.resource.data.name,80)
+        && request.resource.data.wishlist is list
+        && request.resource.data.wishlist.size() <= 100
+        && request.resource.data.addresses is list
+        && request.resource.data.addresses.size() <= 5;
+      allow delete: if false;
+    }
+
+    match /products/{id} {
+      allow read: if true;
+      allow create,update,delete: if admin();
+    }
+    match /categories/{id} {
+      allow read: if true;
+      allow create,update,delete: if admin();
+    }
+    match /coupons/{id} {
+      allow read: if true;
+      allow create,update,delete: if admin();
+    }
+
+    // IMPORTANTE: pedidos SIMULADOS. No son ventas válidas ni verificación
+    // de precios ni procesamiento de pagos. La regla limita su alcance.
+    match /orders/{id} {
+      allow get,list: if signed() && (resource.data.user_id == me() || admin());
+      allow create: if signed()
+        && id.matches('^' + me() + '_[A-Za-z0-9_-]{12,100}$')
+        && request.resource.data.user_id == me()
+        && request.resource.data.order_doc_id == id
+        && request.resource.data.mode == 'spark-demo'
+        && request.resource.data.status == 'simulado'
+        && request.resource.data.payment_status == 'simulado'
+        && request.resource.data.payment_method == 'simulado'
+        && request.resource.data.items is list
+        && request.resource.data.items.size() > 0
+        && request.resource.data.items.size() <= 20
+        && safeNumber(request.resource.data.subtotal)
+        && safeNumber(request.resource.data.discount)
+        && safeNumber(request.resource.data.shipping)
+        && safeNumber(request.resource.data.total)
+        && request.resource.data.keys().hasOnly([
+          'id','folio','user_id','customer_name','customer_email','status',
+          'payment_status','payment_method','subtotal','discount','shipping','total',
+          'shipping_type','address','tracking','created_at','terms_version',
+          'terms_accepted_at','items','mode','order_doc_id'
+        ]);
+      allow update,delete: if admin();
+    }
+
+    match /returns/{id} {
+      allow get,list: if signed() && (resource.data.user_id == me() || admin());
+      allow create: if signed()
+        && request.resource.data.user_id == me()
+        && request.resource.data.id is number
+        && request.resource.data.status == 'solicitada'
+        && request.resource.data.order_doc_id is string
+        && exists(/databases/$(database)/documents/orders/$(request.resource.data.order_doc_id))
+        && get(/databases/$(database)/documents/orders/$(request.resource.data.order_doc_id)).data.user_id == me()
+        && text(request.resource.data.reason,100)
+        && text(request.resource.data.detail,500);
+      allow update,delete: if admin();
+    }
+
+    match /contact_tickets/{id} {
+      allow get,list: if signed() && (resource.data.user_id == me() || admin());
+      allow create: if signed()
+        && request.resource.data.user_id == me()
+        && request.resource.data.status == 'abierto'
+        && text(request.resource.data.name,90)
+        && text(request.resource.data.email,120)
+        && text(request.resource.data.message,2000);
+      allow update,delete: if admin();
+    }
+
+    match /inventory_movements/{id} {
+      allow read,write: if admin();
+    }
+    match /audit_logs/{id} {
+      allow read,write: if admin();
+    }
+    match /{document=**} { allow read,write: if false; }
+  }
+}

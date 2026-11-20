@@ -1,0 +1,61 @@
+LUMA STORE — PUBLICAR EN FIREBASE SIN BLAZE (PLAN SPARK)
+====================================================
+
+ATENCIÓN: esta es la VERSIÓN SPARK. No uses el ZIP anterior
+que desplegaba functions: ese comando exige Blaze.
+
+1) Crear Firebase gratis
+   - Abre https://console.firebase.google.com/
+   - Crea proyecto nuevo y MANTÉN el plan Spark.
+   - NO vincules facturación ni aceptes actualizar a Blaze.
+   - Authentication > Sign-in method: Correo/contraseña, habilitar.
+   - Firestore Database: Crear base de datos en modo producción.
+   - Hosting: utiliza Firebase Hosting tradicional, no App Hosting.
+   - Configuración > Tus apps: registra una app web y copia firebaseConfig.
+
+2) Conectar el proyecto descargado
+   - Abre en VS Code la carpeta que contiene package.json.
+   - Edita src/environments/firebase.config.ts con los datos de TU app web.
+   - No pegues credenciales de cuenta de servicio ni contraseñas.
+
+3) En la terminal PowerShell de esta carpeta (Windows)
+   npm.cmd install
+   npm.cmd install -g firebase-tools
+   firebase.cmd login
+   firebase.cmd use --add
+   npm.cmd run build
+   firebase.cmd deploy --only hosting,firestore
+
+4) La terminal mostrará tu URL pública:
+   https://TU-PROYECTO.web.app
+   Si no aparece, revisa Firebase Console > Hosting.
+
+5) Activar la administradora de demostración
+   - Abre tu URL, regístrate con una cuenta de prueba.
+   - Consola Firebase > Authentication > Usuarios: copia el UID.
+   - Firestore > Iniciar colección: adminUsers
+   - ID de documento = UID exacto
+   - Campo booleano: enabled = true
+   - Cierra sesión y vuelve a iniciar en la web.
+   - Abre Panel > Cargar 24 productos de demostración.
+
+6) IMPORTANTE SOBRE LA DEMOSTRACIÓN
+   - El catálogo y filtros son públicos. El login usa Firebase Auth.
+   - Los pedidos, solicitudes y usuarios de prueba se guardan en Firestore.
+   - Los precios y existencias NO se validan de forma autoritativa en
+     un servidor; NO se descuenta inventario al confirmar compras.
+   - No hay cobros reales. No usar para comercio de verdad.
+   - Si el profesor exige compras con descuento transaccional de
+     inventario y base relacional, esta versión Spark NO cumple esos puntos.
+
+Si quieres publicar SOLO el diseño y aún no configurar Firestore:
+  npm.cmd install
+  npm.cmd install -g firebase-tools
+  firebase.cmd login
+  firebase.cmd use --add
+  npm.cmd run build
+  firebase.cmd deploy --only hosting
+En ese caso se verá el catálogo de vista previa y no habrá login/pedidos.
+
+No ejecutes npm.cmd --prefix functions install ni deploy --only functions.
+No uses firebase init: el archivo firebase.json ya está preparado.

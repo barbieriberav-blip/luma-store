@@ -1,0 +1,16 @@
+node_modules/
+functions/node_modules/
+dist/
+.angular/
+.env
+.env.*
+!.env.example
+.firebase/
+*.log
+service-account*.json
+*serviceAccount*.json
+*.local
+
+# Export local de configuracion Firebase Web (publico, pero especifico del proyecto)
+firebase-js-config.json
+.firebaserc

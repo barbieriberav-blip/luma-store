@@ -1,0 +1,12 @@
+LUMA STORE - BACKEND FIREBASE + VINCULACION, SIN BLAZE
+=====================================================
+
+1. En Firebase Console: activa Authentication correo/contrasena y crea Firestore en modo produccion.
+2. Registra una app Web en el mismo proyecto (Tus apps - icono Web).
+3. Abre esta carpeta y haz doble clic en: VINCULAR_FIREBASE_WINDOWS.bat
+4. Inicia sesion y selecciona tu proyecto; se vinculara la configuracion de tu app Web.
+5. Haz doble clic en: DESPLEGAR_SPARK_WINDOWS.bat para publicar.
+
+Al terminar, Firebase mostrara tu URL HTTPS de tipo https://TU-PROYECTO.web.app
+La tienda sigue siendo una demostracion: NO procesa pagos reales ni actualiza inventario automaticamente.
+Para detalles y como activar panel administrador lee README.md

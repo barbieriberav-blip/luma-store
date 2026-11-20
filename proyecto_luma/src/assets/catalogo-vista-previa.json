@@ -1,0 +1,612 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "Tops",
+      "slug": "tops",
+      "active": 1
+    },
+    {
+      "id": 2,
+      "name": "Pantalones",
+      "slug": "pantalones",
+      "active": 1
+    },
+    {
+      "id": 3,
+      "name": "Shorts",
+      "slug": "shorts",
+      "active": 1
+    },
+    {
+      "id": 4,
+      "name": "Hoodies",
+      "slug": "hoodies",
+      "active": 1
+    },
+    {
+      "id": 5,
+      "name": "Suéteres",
+      "slug": "sueteres",
+      "active": 1
+    },
+    {
+      "id": 6,
+      "name": "Cardigans",
+      "slug": "cardigans",
+      "active": 1
+    },
+    {
+      "id": 7,
+      "name": "Calcetines",
+      "slug": "calcetines",
+      "active": 1
+    },
+    {
+      "id": 8,
+      "name": "Calzado",
+      "slug": "calzado",
+      "active": 1
+    },
+    {
+      "id": 9,
+      "name": "Accesorios",
+      "slug": "accesorios",
+      "active": 1
+    },
+    {
+      "id": 10,
+      "name": "Vestidos",
+      "slug": "vestidos",
+      "active": 1
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "sku": "LUMA-001",
+      "category_id": 1,
+      "name": "Blusa Satinada Alba",
+      "description": "Blusa satinada de caída ligera, ideal para looks elegantes.",
+      "material": "Poliéster satinado",
+      "care": "Lavar a mano",
+      "price": 549,
+      "stock": 15,
+      "sizes": [
+        "CH",
+        "M",
+        "G"
+      ],
+      "image": "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=82",
+      "badge": "NUEVO",
+      "featured": 1,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Tops"
+    },
+    {
+      "id": 2,
+      "sku": "LUMA-002",
+      "category_id": 2,
+      "name": "Jeans Wide Leg",
+      "description": "Mezclilla azul de corte amplio con tiro alto.",
+      "material": "Algodón y elastano",
+      "care": "Lavar al revés",
+      "price": 899,
+      "stock": 13,
+      "sizes": [
+        "6",
+        "8",
+        "10",
+        "12",
+        "14",
+        "16",
+        "18"
+      ],
+      "image": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=900&q=82",
+      "badge": "TRENDING",
+      "featured": 1,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Pantalones"
+    },
+    {
+      "id": 3,
+      "sku": "LUMA-003",
+      "category_id": 4,
+      "name": "Hoodie Essential",
+      "description": "Sudadera oversize cómoda de tacto suave.",
+      "material": "Algodón y poliéster",
+      "care": "Lavado delicado",
+      "price": 799,
+      "stock": 11,
+      "sizes": [
+        "CH",
+        "M",
+        "G",
+        "EG"
+      ],
+      "image": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=900&q=82",
+      "badge": "POPULAR",
+      "featured": 1,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Hoodies"
+    },
+    {
+      "id": 4,
+      "sku": "LUMA-004",
+      "category_id": 2,
+      "name": "Cargo Wide",
+      "description": "Pantalón cargo urbano con bolsillos laterales.",
+      "material": "Algodón",
+      "care": "Lavar en frío",
+      "price": 890,
+      "stock": 9,
+      "sizes": [
+        "6",
+        "8",
+        "10",
+        "12",
+        "14",
+        "16"
+      ],
+      "image": "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=900&q=82",
+      "badge": "NUEVO",
+      "featured": 1,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Pantalones"
+    },
+    {
+      "id": 5,
+      "sku": "LUMA-005",
+      "category_id": 9,
+      "name": "Collar Aurora Dorado",
+      "description": "Collar corto dorado para combinar todos los días.",
+      "material": "Aleación metálica",
+      "care": "Evitar perfumes y humedad",
+      "price": 260,
+      "stock": 21,
+      "sizes": [
+        "Unitalla"
+      ],
+      "image": "https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=900&q=82",
+      "badge": "ACCESORIOS",
+      "featured": 1,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Accesorios"
+    },
+    {
+      "id": 6,
+      "sku": "LUMA-006",
+      "category_id": 1,
+      "name": "Top Básico Aura",
+      "description": "Top ligero para combinar con denim o faldas.",
+      "material": "Algodón",
+      "care": "Lavado suave",
+      "price": 349,
+      "stock": 19,
+      "sizes": [
+        "CH",
+        "M",
+        "G"
+      ],
+      "image": "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&fit=crop&w=900&q=82",
+      "badge": "BÁSICOS",
+      "featured": 0,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Tops"
+    },
+    {
+      "id": 7,
+      "sku": "LUMA-007",
+      "category_id": 1,
+      "name": "Blusa Casual Lino",
+      "description": "Blusa fresca y de corte relajado.",
+      "material": "Lino mixto",
+      "care": "Secado a la sombra",
+      "price": 429,
+      "stock": 12,
+      "sizes": [
+        "CH",
+        "M",
+        "G"
+      ],
+      "image": "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=900&q=82",
+      "badge": "NUEVO",
+      "featured": 0,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Tops"
+    },
+    {
+      "id": 8,
+      "sku": "LUMA-008",
+      "category_id": 2,
+      "name": "Pantalón Rosa Pastel",
+      "description": "Pantalón recto en tono rosa delicado.",
+      "material": "Viscosa",
+      "care": "Lavar con colores similares",
+      "price": 749,
+      "stock": 10,
+      "sizes": [
+        "6",
+        "8",
+        "10",
+        "12",
+        "14"
+      ],
+      "image": "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=900&q=82",
+      "badge": "TENDENCIA",
+      "featured": 0,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Pantalones"
+    },
+    {
+      "id": 9,
+      "sku": "LUMA-009",
+      "category_id": 3,
+      "name": "Short Denim Azul",
+      "description": "Short de mezclilla de cintura alta.",
+      "material": "Denim",
+      "care": "Lavar al revés",
+      "price": 499,
+      "stock": 16,
+      "sizes": [
+        "6",
+        "8",
+        "10",
+        "12",
+        "14"
+      ],
+      "image": "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?auto=format&fit=crop&w=900&q=82",
+      "badge": "VERANO",
+      "featured": 0,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Shorts"
+    },
+    {
+      "id": 10,
+      "sku": "LUMA-010",
+      "category_id": 3,
+      "name": "Short Casual Arena",
+      "description": "Short cómodo de corte natural para días cálidos.",
+      "material": "Algodón",
+      "care": "Lavado delicado",
+      "price": 399,
+      "stock": 9,
+      "sizes": [
+        "CH",
+        "M",
+        "G"
+      ],
+      "image": "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?auto=format&fit=crop&w=900&q=82",
+      "badge": "BÁSICOS",
+      "featured": 0,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Shorts"
+    },
+    {
+      "id": 11,
+      "sku": "LUMA-011",
+      "category_id": 4,
+      "name": "Hoodie Oversize Latte",
+      "description": "Sudadera amplia con capucha y bolsillo frontal.",
+      "material": "Felpa de algodón",
+      "care": "Lavar en frío",
+      "price": 849,
+      "stock": 8,
+      "sizes": [
+        "CH",
+        "M",
+        "G"
+      ],
+      "image": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=900&q=82",
+      "badge": "COZY",
+      "featured": 0,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Hoodies"
+    },
+    {
+      "id": 12,
+      "sku": "LUMA-012",
+      "category_id": 5,
+      "name": "Suéter Cozy Marfil",
+      "description": "Suéter tejido suave de cuello redondo.",
+      "material": "Acrílico y algodón",
+      "care": "Secar extendido",
+      "price": 699,
+      "stock": 14,
+      "sizes": [
+        "CH",
+        "M",
+        "G"
+      ],
+      "image": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=900&q=82",
+      "badge": "COZY",
+      "featured": 0,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Suéteres"
+    },
+    {
+      "id": 13,
+      "sku": "LUMA-013",
+      "category_id": 6,
+      "name": "Cardigan Soft Beige",
+      "description": "Cárdigan abierto para usar en capas.",
+      "material": "Tejido de punto",
+      "care": "Secar extendido",
+      "price": 729,
+      "stock": 11,
+      "sizes": [
+        "CH",
+        "M",
+        "G"
+      ],
+      "image": "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=900&q=82",
+      "badge": "NUEVO",
+      "featured": 0,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Cardigans"
+    },
+    {
+      "id": 14,
+      "sku": "LUMA-014",
+      "category_id": 7,
+      "name": "Calcetines Happy Set",
+      "description": "Set de calcetines cómodos para uso diario.",
+      "material": "Algodón y elastano",
+      "care": "Lavado normal",
+      "price": 159,
+      "stock": 25,
+      "sizes": [
+        "Unitalla"
+      ],
+      "image": "https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?auto=format&fit=crop&w=900&q=82",
+      "badge": "BÁSICOS",
+      "featured": 0,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Calcetines"
+    },
+    {
+      "id": 15,
+      "sku": "LUMA-015",
+      "category_id": 8,
+      "name": "Tenis Urban Blanco",
+      "description": "Tenis urbanos para outfits casuales.",
+      "material": "Sintético y textil",
+      "care": "Limpiar con paño",
+      "price": 1199,
+      "stock": 8,
+      "sizes": [
+        "23",
+        "24",
+        "25",
+        "26",
+        "27"
+      ],
+      "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=900&q=82",
+      "badge": "POPULAR",
+      "featured": 1,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Calzado"
+    },
+    {
+      "id": 16,
+      "sku": "LUMA-016",
+      "category_id": 9,
+      "name": "Bolso Mini City",
+      "description": "Bolso estructurado con correa ajustable.",
+      "material": "Poliuretano",
+      "care": "Limpiar con paño",
+      "price": 629,
+      "stock": 13,
+      "sizes": [
+        "Unitalla"
+      ],
+      "image": "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=900&q=82",
+      "badge": "TRENDING",
+      "featured": 0,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Accesorios"
+    },
+    {
+      "id": 17,
+      "sku": "LUMA-017",
+      "category_id": 9,
+      "name": "Aretes Brillo",
+      "description": "Aretes de acabado dorado ligeros.",
+      "material": "Aleación metálica",
+      "care": "Evitar humedad",
+      "price": 240,
+      "stock": 24,
+      "sizes": [
+        "Unitalla"
+      ],
+      "image": "https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=900&q=82",
+      "badge": "JOYERÍA",
+      "featured": 0,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Accesorios"
+    },
+    {
+      "id": 18,
+      "sku": "LUMA-018",
+      "category_id": 10,
+      "name": "Vestido Noche Estelar",
+      "description": "Vestido sofisticado para ocasiones especiales.",
+      "material": "Poliéster",
+      "care": "Lavado delicado",
+      "price": 1099,
+      "stock": 7,
+      "sizes": [
+        "CH",
+        "M",
+        "G"
+      ],
+      "image": "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&w=900&q=82",
+      "badge": "ELEGANTE",
+      "featured": 1,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Vestidos"
+    },
+    {
+      "id": 19,
+      "sku": "LUMA-019",
+      "category_id": 10,
+      "name": "Vestido Floral Luz",
+      "description": "Vestido fluido con estampado floral.",
+      "material": "Viscosa",
+      "care": "Lavar a mano",
+      "price": 899,
+      "stock": 9,
+      "sizes": [
+        "CH",
+        "M",
+        "G"
+      ],
+      "image": "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&w=900&q=82",
+      "badge": "NUEVO",
+      "featured": 0,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Vestidos"
+    },
+    {
+      "id": 20,
+      "sku": "LUMA-020",
+      "category_id": 8,
+      "name": "Tacones Classic",
+      "description": "Zapatos de tacón para eventos.",
+      "material": "Sintético",
+      "care": "Limpiar con paño",
+      "price": 950,
+      "stock": 6,
+      "sizes": [
+        "23",
+        "24",
+        "25",
+        "26",
+        "27"
+      ],
+      "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=900&q=82",
+      "badge": "ELEGANTE",
+      "featured": 0,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Calzado"
+    },
+    {
+      "id": 21,
+      "sku": "LUMA-021",
+      "category_id": 9,
+      "name": "Pulsera Destello",
+      "description": "Pulsera fina con acabado dorado.",
+      "material": "Aleación metálica",
+      "care": "Evitar agua",
+      "price": 210,
+      "stock": 28,
+      "sizes": [
+        "Unitalla"
+      ],
+      "image": "https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=900&q=82",
+      "badge": "DETALLE",
+      "featured": 0,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Accesorios"
+    },
+    {
+      "id": 22,
+      "sku": "LUMA-022",
+      "category_id": 1,
+      "name": "Blazer City Negro",
+      "description": "Blazer estructurado para un estilo contemporáneo.",
+      "material": "Poliéster y elastano",
+      "care": "Lavado en seco",
+      "price": 1190,
+      "stock": 7,
+      "sizes": [
+        "CH",
+        "M",
+        "G"
+      ],
+      "image": "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=900&q=82",
+      "badge": "EDITORIAL",
+      "featured": 1,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Tops"
+    },
+    {
+      "id": 23,
+      "sku": "LUMA-023",
+      "category_id": 2,
+      "name": "Jeans Rectos Classic",
+      "description": "Jeans rectos versátiles de tiro medio.",
+      "material": "Denim",
+      "care": "Lavar al revés",
+      "price": 799,
+      "stock": 10,
+      "sizes": [
+        "6",
+        "8",
+        "10",
+        "12",
+        "14"
+      ],
+      "image": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=900&q=82",
+      "badge": "BÁSICOS",
+      "featured": 0,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Pantalones"
+    },
+    {
+      "id": 24,
+      "sku": "LUMA-024",
+      "category_id": 9,
+      "name": "Bolso Tote Luna",
+      "description": "Bolso amplio para llevar lo esencial.",
+      "material": "Poliuretano",
+      "care": "Limpiar con paño",
+      "price": 699,
+      "stock": 10,
+      "sizes": [
+        "Unitalla"
+      ],
+      "image": "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=900&q=82",
+      "badge": "POPULAR",
+      "featured": 0,
+      "active": 1,
+      "created_at": "2026-11-20 13:38:34",
+      "category": "Accesorios"
+    }
+  ],
+  "coupons": [
+    {
+      "id": 1,
+      "code": "LUMA10",
+      "percent": 10,
+      "minimum": 500,
+      "max_uses": 300,
+      "used": 0,
+      "active": 1,
+      "expires_at": null
+    }
+  ]
+}
