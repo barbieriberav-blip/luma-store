@@ -60,9 +60,18 @@ service cloud.firestore {
     // IMPORTANTE: pedidos SIMULADOS. No son ventas válidas ni verificación
     // de precios ni procesamiento de pagos. La regla limita su alcance.
     match /orders/{id} {
-      allow get,list: if signed() && (resource.data.user_id == me() || admin());
+      function ownOrderId() {
+        return id.matches('^' + me() + '_[A-Za-z0-9_-]{12,100}$');
+      }
+      // La transacción consulta el folio antes de crear el pedido.
+      allow get: if signed() && (
+        (resource == null && ownOrderId()) ||
+        (resource != null && resource.data.user_id == me()) ||
+        admin()
+      );
+      allow list: if signed() && (resource.data.user_id == me() || admin());
       allow create: if signed()
-        && id.matches('^' + me() + '_[A-Za-z0-9_-]{12,100}$')
+        && ownOrderId()
         && request.resource.data.user_id == me()
         && request.resource.data.order_doc_id == id
         && request.resource.data.mode == 'spark-demo'
