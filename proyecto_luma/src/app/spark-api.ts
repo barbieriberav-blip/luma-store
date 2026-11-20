@@ -4,7 +4,7 @@
  */
 import {FirebaseError} from 'firebase/app';
 import {createUserWithEmailAndPassword,sendPasswordResetEmail,signInWithEmailAndPassword,signOut,updateProfile} from 'firebase/auth';
-import {collection,doc,getDoc,getDocs,query,where,setDoc,updateDoc,addDoc,writeBatch,runTransaction,arrayUnion,arrayRemove} from 'firebase/firestore';
+import {collection,doc,getDoc,getDocFromServer,getDocs,query,where,setDoc,updateDoc,addDoc,writeBatch,runTransaction,arrayUnion,arrayRemove,increment} from 'firebase/firestore';
 import {currentAuth,currentDb,firebaseReady} from './firebase-client';
 
 export const ORDER_MAX_LINES = 20;
@@ -41,6 +41,18 @@ function owner(){const u=currentAuth().currentUser;check(u,'Inicia sesión para 
 function adminOnly(user:any){check(user?.role==='admin','Acceso reservado a la administradora');}
 function addressOk(a:any){return a&&['recipient','street','neighborhood','city','state','postalCode','phone'].every(k=>clean(a[k],180).length>0)&&/^\d{5}$/.test(clean(a.postalCode));}
 function shipping(type:string,subtotal:number){if(type==='recoger')return 0;if(type==='express')return 179;check(type==='estandar','Método de envío incorrecto');return subtotal>=1200?0:99;}
+function couponCode(value:unknown){
+ const code=clean(value,25).toUpperCase();
+ check(/^[A-Z0-9_-]{3,20}$/.test(code),'Cupón no disponible');
+ return code;
+}
+function couponDiscount(coupon:{active?:number;used?:number;max_uses?:number;minimum?:number;percent?:number}|undefined,subtotal:number){
+ if(!coupon?.active)throw new Error('Cupón no disponible');
+ const {used=0,max_uses=0,minimum=0,percent=0}=coupon;
+ check(used<max_uses,'Este cupón ya alcanzó su límite de usos');
+ check(Number.isFinite(subtotal)&&subtotal>=minimum,'No se alcanza el mínimo para el cupón');
+ return {percent,discount:Math.round(subtotal*percent/100)};
+}
 async function catalog(key:'products'|'categories'){
  if(!firebaseReady)return (await preview())[key];
  const rows=await list(key);if(rows.length===0)return (await preview())[key];
@@ -101,10 +113,9 @@ export async function sparkRequest<T>(path:string,method='GET',payload?:unknown)
   return {ok:true} as T;
  }
  if(path==='/coupons/validate'&&method==='POST'){
-  const code=clean(b.code,25).toUpperCase();const found=(await list('coupons')).find(c=>c.code===code&&c.active);
-  check(found,'Cupón no disponible');const subtotal=Number(b.subtotal);
-  check(Number.isFinite(subtotal)&&subtotal>=Number(found.minimum||0),'No se alcanza el mínimo para el cupón');
-  return {code,percent:found.percent,discount:Math.round(subtotal*Number(found.percent)/100)} as T;
+  const code=couponCode(b.code);
+  const coupon=await getDoc(doc(db!,'coupons',code));
+  return {code,...couponDiscount(coupon.data(),Number(b.subtotal))} as T;
  }
  if(path==='/orders'&&method==='POST'){
   const user=await ensureUser();check(user,'Inicia sesión para generar un pedido de prueba');
@@ -126,15 +137,36 @@ export async function sparkRequest<T>(path:string,method='GET',payload?:unknown)
     quantities.set(p.id,quantity);
     items.push({id:i+1,product_id:p.id,sku:p.sku,name:p.name,size:line.size,quantity:count,unit_price:p.price,line_total:p.price*count});subtotal+=p.price*count;
   }
-  let discount=0;
-  if(b.coupon){const x=await sparkRequest<any>('/coupons/validate','POST',{code:b.coupon,subtotal});discount=x.discount;}
-  const delivery=shipping(String(b.shippingType),subtotal-discount);const num=randomId();
-  const order={id:num,folio:`LUMA-DEMO-${new Date().toISOString().slice(0,10).replaceAll('-','')}-${String(num).slice(-6)}`,
-   user_id:user!.id,customer_name:user!.name,customer_email:user!.email,
-   status:'simulado',payment_status:'simulado',payment_method:'simulado',subtotal,discount,shipping:delivery,
-   total:subtotal-discount+delivery,shipping_type:String(b.shippingType),address:b.address,tracking:'',
-   created_at:iso(),terms_version:'1.0',terms_accepted_at:iso(),items,mode:'spark-demo',order_doc_id:ref.id};
-  const saved=await runTransaction(db!,async tx=>{const existing=await tx.get(ref);if(existing.exists())return existing.data();tx.set(ref,order);return order;});
+  const num=randomId();
+  const code=b.coupon?couponCode(b.coupon):null;
+  const saved=await runTransaction(db!,async tx=>{
+   const existing=await tx.get(ref);
+   if(existing.exists())return existing.data();
+   let discount=0;
+   if(code){
+    const couponRef=doc(db!,'coupons',code);
+    const coupon=(await tx.get(couponRef)).data();
+    discount=couponDiscount(coupon,subtotal).discount;
+    tx.update(couponRef,{used:increment(1),last_order_key:key});
+   }
+   const delivery=shipping(String(b.shippingType),subtotal-discount);
+   const order={id:num,folio:`LUMA-DEMO-${new Date().toISOString().slice(0,10).replaceAll('-','')}-${String(num).slice(-6)}`,
+    user_id:user!.id,customer_name:user!.name,customer_email:user!.email,
+    status:'simulado',payment_status:'simulado',payment_method:'simulado',subtotal,discount,shipping:delivery,
+    total:subtotal-discount+delivery,shipping_type:String(b.shippingType),address:b.address,tracking:'',
+    created_at:iso(),terms_version:'1.0',terms_accepted_at:iso(),items,mode:'spark-demo',order_doc_id:ref.id,
+    ...(code?{coupon_code:code}:{})};
+   tx.set(ref,order);
+   return order;
+  }).catch(async (error:unknown)=>{
+   if(!code||!(error instanceof FirebaseError)||error.code!=='permission-denied')throw error;
+   // Firestore puede evaluar las reglas antes de volver a intentar una transacción concurrente.
+   const existing=await getDocFromServer(ref);
+   if(existing.exists())return existing.data();
+   const latest=await getDocFromServer(doc(db!,'coupons',code));
+   couponDiscount(latest.data(),subtotal);
+   throw error;
+  });
   return saved as T;
  }
  if(path==='/orders'&&method==='GET')return sortNew(await list('orders',true)) as T;
@@ -211,7 +243,13 @@ export async function sparkRequest<T>(path:string,method='GET',payload?:unknown)
  if(path==='/admin/coupons'&&method==='POST'){
   const code=clean(b.code,20).toUpperCase(),percent=Number(b.percent),minimum=Number(b.minimum),maxUses=Number(b.maxUses);
   check(/^[A-Z0-9_-]{3,20}$/.test(code)&&Number.isInteger(percent)&&percent>=1&&percent<=90&&Number.isInteger(minimum)&&minimum>=0&&Number.isInteger(maxUses)&&maxUses>=1,'Cupón inválido');
-  const id=randomId();await setDoc(doc(db!,'coupons',code),{id,code,percent,minimum,max_uses:maxUses,used:0,active:1,created_at:iso()});return {id} as T;
+  const id=randomId();
+  const ref=doc(db!,'coupons',code);
+  await runTransaction(db!,async tx=>{
+   check(!(await tx.get(ref)).exists(),'Ya existe un cupón con ese código');
+   tx.set(ref,{id,code,percent,minimum,max_uses:maxUses,used:0,active:1,created_at:iso()});
+  });
+  return {id} as T;
  }
  const couponPath=path.match(/^\/admin\/coupons\/(\d+)$/);
  if(couponPath&&method==='PATCH'){

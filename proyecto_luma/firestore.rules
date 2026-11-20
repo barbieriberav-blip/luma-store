@@ -53,8 +53,25 @@ service cloud.firestore {
       allow create,update,delete: if admin();
     }
     match /coupons/{id} {
+      function redeemsCoupon() {
+        let key = request.resource.data.last_order_key;
+        let orderId = me() + '_' + key;
+        let order = /databases/$(database)/documents/orders/$(orderId);
+        return signed()
+          && key is string
+          && key.matches('^[A-Za-z0-9_-]{12,100}$')
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['used','last_order_key'])
+          && resource.data.active == 1
+          && resource.data.used < resource.data.max_uses
+          && request.resource.data.used == resource.data.used + 1
+          && !exists(order)
+          && getAfter(order).data.user_id == me()
+          && getAfter(order).data.coupon_code == id
+          && getAfter(order).data.subtotal >= resource.data.minimum;
+      }
       allow read: if true;
-      allow create,update,delete: if admin();
+      allow create,delete: if admin();
+      allow update: if admin() || redeemsCoupon();
     }
 
     // IMPORTANTE: pedidos SIMULADOS. No son ventas válidas ni verificación
@@ -62,6 +79,13 @@ service cloud.firestore {
     match /orders/{id} {
       function ownOrderId() {
         return id.matches('^' + me() + '_[A-Za-z0-9_-]{12,100}$');
+      }
+      function appliesCoupon(code) {
+        let coupon = /databases/$(database)/documents/coupons/$(code);
+        return code is string
+          && code.matches('^[A-Z0-9_-]{3,20}$')
+          && getAfter(coupon).data.used == get(coupon).data.used + 1
+          && me() + '_' + getAfter(coupon).data.last_order_key == id;
       }
       // La transacción consulta el folio antes de crear el pedido.
       allow get: if signed() && (
@@ -85,11 +109,14 @@ service cloud.firestore {
         && safeNumber(request.resource.data.discount)
         && safeNumber(request.resource.data.shipping)
         && safeNumber(request.resource.data.total)
+        && ('coupon_code' in request.resource.data
+          ? appliesCoupon(request.resource.data.coupon_code)
+          : request.resource.data.discount == 0)
         && request.resource.data.keys().hasOnly([
           'id','folio','user_id','customer_name','customer_email','status',
           'payment_status','payment_method','subtotal','discount','shipping','total',
           'shipping_type','address','tracking','created_at','terms_version',
-          'terms_accepted_at','items','mode','order_doc_id'
+          'terms_accepted_at','items','mode','order_doc_id','coupon_code'
         ]);
       allow update,delete: if admin();
     }
