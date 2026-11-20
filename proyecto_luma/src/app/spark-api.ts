@@ -2,8 +2,13 @@
  * No hace liquidación financiera, descuento transaccional de inventario ni validación
  * autoritativa de precios: para comercio real se requiere un backend seguro.
  */
+import {FirebaseError} from 'firebase/app';
+import {createUserWithEmailAndPassword,sendPasswordResetEmail,signInWithEmailAndPassword,signOut,updateProfile} from 'firebase/auth';
 import {collection,doc,getDoc,getDocs,query,where,setDoc,updateDoc,addDoc,writeBatch,runTransaction,arrayUnion,arrayRemove} from 'firebase/firestore';
 import {currentAuth,currentDb,firebaseReady} from './firebase-client';
+
+export const ORDER_MAX_LINES = 20;
+export const ORDER_MAX_LINE_QUANTITY = 10;
 
 const iso=()=>new Date().toISOString();
 const randomId=()=>Date.now()*1000+Math.floor(Math.random()*1000);
@@ -49,8 +54,37 @@ export async function sparkRequest<T>(path:string,method='GET',payload?:unknown)
  const b:any=payload||{},db=firebaseReady?currentDb():null;
  if(method==='GET'&&path==='/products')return await catalog('products') as T;
  if(method==='GET'&&path==='/categories')return await catalog('categories') as T;
- if(!firebaseReady)throw new Error('Para utilizar cuentas y pedidos, configura Firebase. El catálogo está disponible en modo vista previa.');
+ if(!firebaseReady){
+  if(path==='/auth/me'&&method==='GET')return {user:null} as T;
+  throw new Error('El servicio de cuentas y pedidos de LUMA requiere configuración en Firebase.');
+ }
  const auth=currentAuth();await auth.authStateReady();
+ if(path==='/auth/register'&&method==='POST'){
+  const name=String(b.name??'').trim();
+  const email=String(b.email??'').trim();
+  const password=String(b.password??'');
+  check(name.length>=2&&name.length<=80,'Ingresa un nombre de entre 2 y 80 caracteres');
+  check(password.length>=10,'La contraseña debe tener al menos 10 caracteres');
+  const credential=await createUserWithEmailAndPassword(auth,email,password);
+  try{
+   await updateProfile(credential.user,{displayName:name});
+   return {user:await ensureUser()} as T;
+  }catch{
+   await signOut(auth).catch(()=>{});
+   throw new Error('Tu cuenta se creó, pero el perfil quedó pendiente. Inicia sesión para completar el acceso.');
+  }
+ }
+ if(path==='/auth/login'&&method==='POST'){
+  await signInWithEmailAndPassword(auth,String(b.email??'').trim(),String(b.password??''));
+  try{return {user:await ensureUser()} as T;}
+  catch(error){await signOut(auth).catch(()=>{});throw error;}
+ }
+ if(path==='/auth/logout'&&method==='POST'){await signOut(auth);return {ok:true} as T;}
+ if(path==='/auth/recover'&&method==='POST'){
+  try{await sendPasswordResetEmail(auth,String(b.email??'').trim());}
+  catch(error){if(!(error instanceof FirebaseError)||error.code!=='auth/user-not-found')throw error;}
+  return {message:'Si la cuenta existe, Firebase enviará las instrucciones de recuperación a tu correo.'} as T;
+ }
  if(path==='/auth/me'&&method==='GET')return {user:await ensureUser()} as T;
  if(path==='/auth/profile'&&method==='POST'){
   const u=await ensureUser();check(u,'Inicia sesión para modificar tu perfil');const name=clean(b.name,80);
@@ -74,16 +108,22 @@ export async function sparkRequest<T>(path:string,method='GET',payload?:unknown)
  }
  if(path==='/orders'&&method==='POST'){
   const user=await ensureUser();check(user,'Inicia sesión para generar un pedido de prueba');
-  const lines=Array.isArray(b.items)?b.items:[];check(lines.length>0&&lines.length<=20,'Agrega productos al carrito');
+  const lines=Array.isArray(b.items)?b.items:[];
+  check(lines.length>0,'Agrega productos al carrito');
+  check(lines.length<=ORDER_MAX_LINES,`El pedido admite hasta ${ORDER_MAX_LINES} combinaciones de producto y talla`);
   check(b.termsAccepted===true,'Debes aceptar los términos');check(addressOk(b.address),'Completa los datos de entrega ficticios');
   const key=clean(b.idempotencyKey,100);
   check(/^[A-Za-z0-9_-]{12,100}$/.test(key),'Identificador de compra inválido');
   const ref=doc(db!,'orders',user!.id+'_'+key);
-  const ps=await catalog('products');const items:any[]=[];let subtotal=0;
+  const ps=await catalog('products');const items:any[]=[];const quantities=new Map<number,number>();let subtotal=0;
   for(const [i,line] of lines.entries()){
     const p=ps.find((x:any)=>x.id===Number(line.productId));const count=Number(line.quantity);
-    check(p&&p.active!==0,'Producto no encontrado');check(Number.isInteger(count)&&count>0&&count<=10,'Cantidad inválida');
-    check(p.sizes.includes(line.size),'Talla no disponible');check(count<=p.stock,'Existencias informativas insuficientes');
+    check(p&&p.active!==0,'Producto no encontrado');
+    check(Number.isInteger(count)&&count>0&&count<=ORDER_MAX_LINE_QUANTITY,`El pedido admite de 1 a ${ORDER_MAX_LINE_QUANTITY} piezas por producto y talla`);
+    check(p.sizes.includes(line.size),'Talla no disponible');
+    const quantity=(quantities.get(p.id)??0)+count;
+    check(quantity<=p.stock,'Existencias informativas insuficientes');
+    quantities.set(p.id,quantity);
     items.push({id:i+1,product_id:p.id,sku:p.sku,name:p.name,size:line.size,quantity:count,unit_price:p.price,line_total:p.price*count});subtotal+=p.price*count;
   }
   let discount=0;

@@ -9,6 +9,10 @@ if (!found || found[1].startsWith('REEMPLAZAR')) {
   console.error('✗ Firebase no está vinculado. Ejecuta VINCULAR_FIREBASE_WINDOWS.bat');
   process.exit(1);
 }
+if (!/\bUSE_FIREBASE_EMULATORS\s*=\s*false\b/.test(cfg)) {
+  console.error('✗ Desactiva los emuladores en firebase.config.ts antes de publicar.');
+  process.exit(1);
+}
 if (!fs.existsSync('.firebaserc')) {
   console.error('✗ Falta seleccionar el proyecto Firebase con firebase.cmd use --add');
   process.exit(1);

@@ -12,7 +12,7 @@ echo.
 echo Vas a publicar las reglas de Firestore y la pagina LUMA STORE.
 choice /c SN /m "Confirmar publicacion"
 if errorlevel 2 exit /b 0
-call firebase.cmd deploy --only hosting,firestore
+call firebase.cmd deploy --project default --only hosting,firestore
 if errorlevel 1 (echo Error al desplegar. Revisa permisos y proyecto activo. & pause & exit /b 1)
 echo.
 echo Exito: consulta la URL web.app que aparece arriba.
