@@ -31,7 +31,7 @@ export class App implements OnInit {
  account=signal<CurrentUser|null>(null);authMode=signal<AuthMode>('login');authForm={name:'',email:'',password:''};returnAfterAuth=signal<Page>('inicio');
  orders=signal<Order[]>([]);returns=signal<ReturnRequest[]>([]);addresses=signal<any[]>([]);
  checkoutAddress=blankAddress();shippingType=signal('estandar');couponInput='';couponApplied=signal('');couponDiscount=signal(0);termsAccepted=false;submitBusy=signal(false);idempotencyKey='';
- notice=signal('');error=signal('');apiConnected=signal(false);loading=signal(true);busy=signal(false);lastOrder=signal<Order|null>(null);
+ notice=signal('');error=signal('');busy=signal(false);lastOrder=signal<Order|null>(null);
  selectedPolicy=signal('envios');faqOpen=signal(0);contactForm={name:'',email:'',message:''};
  admin=signal<AdminData|null>(null);adminTab=signal('resumen');productEditor=signal(false);editProductId=signal<number|null>(null);productForm=blankProduct();categoryName='';couponForm={code:'',percent:10,minimum:500,maxUses:100};
  returnOrderId=signal<number|null>(null);returnForm={reason:'Talla incorrecta',detail:''};
@@ -39,7 +39,7 @@ export class App implements OnInit {
  readonly quickBenefits=[{icon:'✦',title:'ESTILO A TU MANERA',description:'Prendas y accesorios para combinar'},{icon:'◈',title:'COMPRA SEGURA',description:'Demostración sin cobros reales'},{icon:'▱',title:'ENVÍO Y RECOLECCIÓN',description:'Opciones y costos antes de confirmar'}];
  readonly faqs=[{q:'¿Puedo realizar una compra real?',a:'No. LUMA STORE es un proyecto académico de demostración. Los productos, existencias, precios y pagos son simulados y no se realizan cargos ni envíos físicos.'},{q:'¿Cuánto cuesta el envío?',a:'En este simulador, el envío estándar cuesta $99 MXN y es gratuito a partir de $1,200 MXN después de descuentos. El exprés cuesta $179 MXN y la recolección simulada es gratuita.'},{q:'¿Cómo puedo dar seguimiento a mi pedido?',a:'Inicia sesión y abre Mi cuenta → Pedidos. Ahí verás el folio, fecha, productos, estado y guía simulada si un administrador la registra.'},{q:'¿Qué pasa si la talla no es correcta?',a:'Desde Mi cuenta puedes registrar una solicitud de devolución. El administrador podrá revisar, aprobar y registrar un reembolso simulado. Las políticas son académicas y no sustituyen los derechos del consumidor.'},{q:'¿Puedo pagar con tarjeta?',a:'No. El único medio disponible es el pago de prueba. LUMA no solicita ni conserva números de tarjeta, CVV o datos bancarios.'}];
  constructor(){effect(()=>{try{localStorage.setItem('luma_cart_v2',JSON.stringify(this.cart()))}catch{}});effect(()=>{try{localStorage.setItem('luma_wishlist_v2',JSON.stringify(this.favorites()))}catch{}})}
- async ngOnInit(){await Promise.all([this.loadCatalog(),this.loadSession()]);this.loading.set(false)}
+ async ngOnInit(){await Promise.all([this.loadCatalog(),this.loadSession()])}
  readonly featured=computed(()=>this.products().filter(p=>p.featured).slice(0,6));
  readonly visibleProducts=computed(()=>{let ps=[...this.products()];const q=this.search().trim().toLocaleLowerCase('es-MX');if(q)ps=ps.filter(p=>(p.name+' '+p.description+' '+p.category+' '+p.sku).toLocaleLowerCase('es-MX').includes(q));if(this.filteredCategory()!=='Todos')ps=ps.filter(p=>p.category===this.filteredCategory());if(this.favoritesOnly())ps=ps.filter(p=>this.favorites().includes(p.id));if(this.stockOnly())ps=ps.filter(p=>p.stock>0);ps=ps.filter(p=>p.price<=this.maxPrice());if(this.sort()==='price_asc')ps.sort((a,b)=>a.price-b.price);if(this.sort()==='price_desc')ps.sort((a,b)=>b.price-a.price);if(this.sort()==='name')ps.sort((a,b)=>a.name.localeCompare(b.name,'es'));return ps;});
  readonly cartView=computed<CartView[]>(()=>this.cart().flatMap(line=>{const p=this.products().find(x=>x.id===line.productId);return p?[{...line,product:p,lineTotal:p.price*line.quantity}]:[]}));
@@ -88,7 +88,7 @@ export class App implements OnInit {
  }
  tell(message:string){this.notice.set(message);this.error.set('');window.setTimeout(()=>{if(this.notice()===message)this.notice.set('')},5500)}
  fail(e:unknown){const msg=e instanceof Error?e.message:'Ocurrió un error';this.error.set(msg);window.setTimeout(()=>{if(this.error()===msg)this.error.set('')},6500)}
- async loadCatalog(){try{const [products,categories]=await Promise.all([this.request<Product[]>('/products'),this.request<Category[]>('/categories')]);this.products.set(products);this.categories.set(categories);this.apiConnected.set(firebaseReady)}catch(e){this.apiConnected.set(false);this.fail(e)}}
+ async loadCatalog(){try{const [products,categories]=await Promise.all([this.request<Product[]>('/products'),this.request<Category[]>('/categories')]);this.products.set(products);this.categories.set(categories)}catch(e){this.fail(e)}}
  async loadSession(){try{const result=await this.request<{user:CurrentUser|null}>('/auth/me');this.account.set(result.user);if(result.user)await this.loadAccount()}catch{this.account.set(null)}}
  go(page:Page){this.page.set(page);this.cartDrawer.set(false);this.selected.set(null);this.productEditor.set(false);window.scrollTo({top:0,behavior:'smooth'});if(page==='admin')this.loadAdmin();if(page==='cuenta'&&this.account())this.loadAccount()}
  chooseCategory(cat:string){this.filteredCategory.set(cat);this.favoritesOnly.set(false);this.go('catalogo')}
