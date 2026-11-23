@@ -51,7 +51,10 @@ test('Luma: Firebase Auth, API e inventario en PostgreSQL', async t => {
     assert.equal((await request('/orders')).status,401);
     assert.equal((await request('/auth/me','GET','token-invalido')).status,401);
     assert.equal((await request('/admin/overview','GET',customer.token)).status,403);
-    assert.equal((await request('/products')).data.length,24);
+    const catalog=(await request('/products')).data;
+    assert.equal(catalog.length,24);
+    assert.ok(catalog.every(p=>p.gallery.length===2 && p.gallery.every(photo=>photo.url.startsWith('/assets/product-gallery/') && photo.alt)));
+
     assert.equal((await request('/categories')).data.length,10);
     const product=(await request('/products')).data.find(item=>item.sizes.includes('M'));
     const {id:variantId}=await first(pool,"SELECT id FROM product_variants WHERE product_id=$1 AND size='M'",[product.id]);
@@ -74,6 +77,18 @@ test('Luma: Firebase Auth, API e inventario en PostgreSQL', async t => {
     })).status,409);
     assert.equal((await request('/admin/products/'+product.id,'PATCH',admin.token,adjustments)).status,200);
     assert.equal(await stock(),6);
+    const catalogItem=async()=>(await request('/products')).data.find(item=>item.id===product.id);
+    assert.deepEqual((await catalogItem()).gallery,product.gallery);
+    const productRoute='/admin/products/'+product.id;
+    const alternateImages=[{url:'/assets/product-gallery/01-detalle.webp',alt:'Detalle de la tela'}];
+    assert.equal((await request(productRoute,'PATCH',customer.token,{...adjustments,gallery:alternateImages})).status,403);
+    assert.equal((await request(productRoute,'PATCH',admin.token,{...adjustments,gallery:alternateImages})).status,200);
+    assert.deepEqual((await catalogItem()).gallery,alternateImages);
+    assert.equal((await request(productRoute,'PATCH',admin.token,{...adjustments,gallery:[...alternateImages,...alternateImages]})).status,400);
+    assert.deepEqual((await catalogItem()).gallery,alternateImages);
+    assert.equal((await request(productRoute,'PATCH',admin.token,{...adjustments,gallery:[]})).status,200);
+    assert.deepEqual((await catalogItem()).gallery,[]);
+    t.diagnostic('Galería: carga inicial, orden, edición con rol, validación y eliminación verificadas.');
     const duplicate=await order(2,'compra-ejemplo-001');
     assert.equal(duplicate.data.folio,purchase.data.folio);
     assert.equal(await stock(),6);

@@ -898,6 +898,28 @@
                       "type": "integer"
                     },
                     "description": "Existencias que vio la administradora antes de editar. Requerido para ajustar una talla existente."
+                  },
+                  "gallery": {
+                    "type": "array",
+                    "maxItems": 5,
+                    "description": "Fotos adicionales en el orden en que se muestran. Omitir conserva las existentes.",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "url",
+                        "alt"
+                      ],
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "maxLength": 1000
+                        },
+                        "alt": {
+                          "type": "string",
+                          "maxLength": 120
+                        }
+                      }
+                    }
                   }
                 },
                 "required": [
@@ -1015,6 +1037,28 @@
                       "type": "integer"
                     },
                     "description": "Existencias que vio la administradora antes de editar. Requerido para ajustar una talla existente."
+                  },
+                  "gallery": {
+                    "type": "array",
+                    "maxItems": 5,
+                    "description": "Fotos adicionales en el orden en que se muestran. Omitir conserva las existentes.",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "url",
+                        "alt"
+                      ],
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "maxLength": 1000
+                        },
+                        "alt": {
+                          "type": "string",
+                          "maxLength": 120
+                        }
+                      }
+                    }
                   }
                 },
                 "required": [

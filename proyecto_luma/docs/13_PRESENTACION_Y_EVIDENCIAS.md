@@ -1,44 +1,26 @@
-# 13. Guion de demostración y relación con la rúbrica
+# Guion de exposición de LUMA STORE
 
-## Exposición propuesta (12 a 15 minutos)
-| Minutos | Contenido | Evidencia |
+Duración prevista de **12 a 15 minutos**, más preguntas. Abre dos perfiles o ventanas de navegador con cuentas ficticias de clienta y administración. Confirma antes de exponer que [http://localhost:4201/api/health](http://localhost:4201/api/health) responde y deja 8 piezas talla M de **Blusa Satinada Alba**.
+
+| Tiempo | Qué mostrar | Qué explicar |
 |---|---|---|
-| 0:00–1:00 | Nombre, problema y propuesta B2C | Inicio editorial y descripción |
-| 1:00–2:30 | Público, catálogo y diferenciación | Categorías, productos y 24 SKU |
-| 2:30–4:30 | Búsqueda, filtro y ficha | Consulta de producto, talla, precio, stock |
-| 4:30–7:00 | Carrito y checkout | Registro, dirección ficticia, envío, cupón, términos |
-| 7:00–8:00 | Confirmación y folio | Pedido y total final, precio calculado en servidor |
-| 8:00–10:00 | Panel administrador | Pedido, inventario, movimiento y cambio de estado |
-| 10:00–11:15 | Devolución | Solicitud con folio y resolución simulada |
-| 11:15–12:30 | Arquitectura, DB y API | Código, esquema, GET/POST principales |
-| 12:30–14:00 | Seguridad, privacidad y políticas | Denegación admin cliente, textos públicos y pruebas |
-| 14:00–15:00 | Conclusiones y mejoras | Manuales, límites y trabajo futuro |
+| 0:00–2:00 | Portada y catálogo. Busca la blusa y abre tres vistas. | LUMA es un prototipo B2C. Muestra talle, precio y disponibilidad en la ficha. |
+| 2:00–5:00 | Selecciona talla M y dos unidades. Abre el carrito, elige recolección, revisa el total y confirma. | El pago es simulado. La API vuelve a calcular el total y registra el pedido con su folio. |
+| 5:00–7:00 | En el panel muestra el mismo folio, la salida de −2 y las 6 piezas restantes. | Una transacción conserva juntos el pedido y el movimiento de inventario. |
+| 7:00–8:30 | Intenta aumentar la cantidad a 7. Muestra cómo protege las existencias. | Con 6 piezas disponibles la interfaz evita la cantidad excedida. La prueba de integración verifica también el rechazo en la API. |
+| 8:30–10:30 | Pasa el pedido por Preparando, Enviado y Entregado. Como clienta envía una solicitud. Como admin aprueba y reembolsa la prueba. | La devolución total tiene folio y devuelve dos unidades una vez. |
+| 10:30–12:30 | Muestra ficha técnica, tablas, OpenAPI y evidencia de restauración. | Angular consulta la API Express. Firebase autentica y PostgreSQL conserva datos, reglas e inventario. |
+| 12:30–14:30 | Abre términos, privacidad y matriz normativa. Resume compatibilidad y accesibilidad. | Los importes y políticas corresponden a la demo académica. Explica qué se requeriría para operar comercialmente. |
 
-## Script de demostración reproducible
-1. Iniciar `npm.cmd run dev`. Confirmar `http://localhost:4200` y salud de API.
-2. Ingresar como cliente creado durante la demostración, explorar tops, aplicar filtro y buscar jeans.
-3. Agregar una o dos prendas; elegir talla; modificar cantidad.
-4. Completar checkout con datos **ficticios**, aplicar `LUMA10`, aceptar términos y generar folio.
-5. En otra sesión o después de cerrar sesión, ingresar con la cuenta administradora creada por CLI.
-6. Abrir Panel → Resumen y comprobar venta, producto y movimientos; cambiar pedido a preparando/enviado.
-7. Volver al cliente, registrar devolución; como admin aprobar y reembolsar la prueba.
-8. Mostrar SQL, auditoría, reportes, pruebas de acceso y documentos; explicar que no hubo dinero ni envío físico.
+## Evidencias rápidas
 
-## Matriz de los 13 entregables del docente
-| N.º | Entregable | Archivo / evidencia incluida | Evidencia restante |
-|---|---|---|---|
-| 01 | Negocio y mercado | `07_ANALISIS_NEGOCIO.md` | Comparación documental incluida; encuesta si se exige |
-| 02 | Requisitos y backlog | `08_REQUISITOS_Y_BACKLOG.md` | Aprobación, cronograma real, RACI validada |
-| 03 | Diseño UX/UI | `09_DISENO_UX_UI.md`, archivos Angular | Wireframes dibujados, capturas finales |
-| 04 | Código fuente | `src/`, `server/`, `tools/`, `tests/` | Repositorio Git remoto y commits propios |
-| 05 | Frontend funcional | Código Angular | Verificar compilación y URL local con capturas |
-| 06 | Backend/API | API Node y `06_API_REST.md` | Colección Postman/OpenAPI formal si se exige |
-| 07 | Base de datos | `server/data.mjs`, `04_BASE_DE_DATOS.md` | Diagrama ER gráfico, prueba documentada de restauración |
-| 08 | Panel admin | Pantallas Angular y endpoints | Capturas y demostración en equipo |
-| 09 | Legal/comercial | Pantallas de políticas, `10_MARCO_LEGAL_Y_POLITICAS.md` | Validación normativa final por tipo de operación |
-| 10 | Manuales | `01_GUIA_INSTALACION`, `02_MANUAL_COMPRADOR`, `03_MANUAL_ADMIN` | Capturas numeradas exigidas |
-| 11 | Calidad/seguridad | Tests y `11_PLAN_PRUEBAS.md` | Resultados E2E, accesibilidad, compatibilidad, recuperación |
-| 12 | Ficha y arquitectura | `12_FICHA_TECNICA.md`, `05_ARQUITECTURA.md` | Diagrama de despliegue final y versión desplegada |
-| 13 | Presentación/demo | Este guion | Diapositivas y exposición práctica |
+[1. Catálogo](capturas-postgres/01-catalogo.webp) · [2. Galería](capturas-postgres/02-galeria.webp) · [3. Carrito](capturas-postgres/03-carrito.webp) · [4. Checkout](capturas-postgres/04-checkout.webp) · [5. Folio](capturas-postgres/05-folio.webp) · [6. Movimiento](capturas-postgres/06-movimiento.webp) · [7. Panel](capturas-postgres/07-panel-pedido.webp) · [8. Devolución](capturas-postgres/08-devolucion.webp)
 
-**Criterio de transparencia:** la presencia del código y los documentos no prueba por sí misma que el frontend se haya ejecutado en Windows ni que se hayan realizado pruebas con usuarios. Cada evidencia no ejecutada está señalada para completarse de forma honesta. La rúbrica exige una demostración verificable, no afirmaciones generales.
+[Manual de compra](02_MANUAL_COMPRADOR.md) · [Manual del panel](03_MANUAL_ADMIN.md) · [Matriz de requisitos](08_REQUISITOS_Y_BACKLOG.md) · [Matriz normativa](10_MARCO_LEGAL_Y_POLITICAS.md) · [Instalación reproducible](../server/README.md)
+
+## Preguntas para la defensa
+
+- **¿Cómo se evita la sobreventa?** La API bloquea las filas de inventario implicadas dentro de la transacción y comprueba el stock antes del descuento.
+- **¿Qué protege el panel?** La API valida la identidad de Firebase y consulta si el UID tiene rol de administración en PostgreSQL.
+- **¿Qué pasa ante un reintento?** Una clave idempotente por cliente permite devolver el mismo pedido y folio.
+- **¿Qué ocurre si se pierde la base?** Se restaura una copia en una base nueva y se comparan pedidos, partidas, variantes, pagos y movimientos.

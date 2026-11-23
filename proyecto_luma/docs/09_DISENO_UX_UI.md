@@ -53,8 +53,13 @@ Inicio
 
 **Móvil:** header compacto → hero apilado → beneficios verticales → tendencias con deslizamiento horizontal → categorías 2 columnas → catálogo 2 columnas → footer reordenado. Modales y formularios cambian a una columna.
 
-## Accesibilidad y mejoras pendientes
-Se usan controles nativos, etiquetas de formularios, alternativa de imagen, estados de error/éxito, foco visible y opción de movimiento reducido. Validar con lector de pantalla y teclado los modales y paneles; implementar bloqueo de foco en diálogos y mejorar el menú móvil si lo exige la auditoría. Medir contraste real y rendimiento en la instalación final.
+## Accesibilidad y pantallas de referencia
+
+Los diálogos usan controles nativos, mantienen el foco mientras están abiertos y lo devuelven al control de origen cuando se cierra la ficha. La galería usa texto alternativo descriptivo, miniaturas con estado anunciado y flechas de teclado. La tienda incluye salto a contenido, foco visible, etiquetas y una opción de movimiento reducido basada en la preferencia del dispositivo.
+
+[Catálogo en escritorio](capturas-postgres/01-catalogo.webp) · [Ficha en escritorio](capturas-postgres/02-galeria.webp) · [Ficha en tableta](capturas-postgres/10-tableta.webp) · [Ficha en móvil](capturas-postgres/11-celular.webp) · [Checkout](capturas-postgres/04-checkout.webp)
+
+Consulta los resultados de teclado y contraste en el [registro de evidencias](16_POSTGRES_EVIDENCIAS.md). Queda pendiente una sesión con lector de pantalla y la [evaluación de usabilidad con una persona](17_PRUEBA_USABILIDAD.md).
 
 ## Fuente de fotografías
-Las referencias se cargan desde `images.unsplash.com`, con fallback en `src/assets/product-fallback.svg`. Son ilustraciones del concepto de moda, no imágenes de mercancía real. **Antes de comercializar:** verificar uso permitido de cada imagen, sustituir por fotografías propias/licenciadas y asociar imágenes a SKU reales. Consultar: https://unsplash.com/license
+La galería de PostgreSQL usa ilustraciones generadas para esta demostración, guardadas en `src/assets/product-gallery` y asociadas al SKU correspondiente. Los recursos editoriales de portada y algunos catálogos de Firebase conservan referencias a Unsplash y disponen de `src/assets/product-fallback.svg` si la imagen no carga. Consulta el inventario de recursos de la [ficha técnica](12_FICHA_TECNICA.md).

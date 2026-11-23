@@ -10,6 +10,7 @@ erDiagram
  PRODUCTS ||--o{ FAVORITES : aparece
  CATEGORIES ||--o{ PRODUCTS : agrupa
  PRODUCTS ||--o{ PRODUCT_VARIANTS : tiene
+ PRODUCTS ||--o{ PRODUCT_IMAGES : muestra
  COUPONS o|--o{ ORDERS : aplica
  ORDERS ||--|| ORDER_DELIVERY : indica
  ORDERS ||--|| PAYMENTS : registra
@@ -26,6 +27,7 @@ erDiagram
 |---|---|
 | `users`, `admins` | UID externo como PK. La clave foránea en `admins` limita el rol a perfiles existentes. |
 | `products`, `categories`, `product_variants` | ID entero, categoría por FK, SKU único, talla única por producto y stock no negativo. |
+| `product_images` | FK a producto, posición ordenada, URL única por producto y texto alternativo. |
 | `orders`, `order_items` | ID y folio únicos, clave idempotente por cliente, FK a variante, historial de precios y cálculo de total. |
 | `order_delivery`, `payments` | Un registro por pedido. Dirección histórica, guía y confirmación de pago simulado. |
 | `inventory_movements`, `return_requests` | FK a pedido y tallas, bitácora de salidas y reintegros, folio y estado de solicitud. |

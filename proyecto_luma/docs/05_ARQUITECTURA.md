@@ -1,22 +1,23 @@
-# 05. Arquitectura de la solución
-
-## Diagrama de contexto
+# Arquitectura de LUMA con PostgreSQL
 
 ```mermaid
 flowchart TB
-  C[Cliente o administradora] --> H[Firebase Hosting HTTPS]
-  H --> A[Angular SPA · LUMA STORE]
-  A --> AU[Firebase Authentication]
-  A --> F[Cloud Functions v2 · lumaApi]
-  F --> DB[(Cloud Firestore)]
-  F --> L[Movimientos y auditoría]
+  U["Clienta o administradora"] --> A["Angular en el navegador"]
+  A --> F["Firebase Authentication"]
+  A --> R["API REST Express"]
+  F --> T["Token de identidad"]
+  T --> R
+  R --> P[("PostgreSQL")]
 ```
 
-## Capas
-**Presentación:** Angular 22 con componentes y señales; conserva carrito/favoritos en almacenamiento del navegador y no contiene credenciales de administrador. **Identidad:** Firebase Auth administra contraseñas, sesión y correo de recuperación. **Negocio:** Cloud Functions callable acepta datos tipados por ruta/método, aplica controles de rol y opera transacciones. **Persistencia:** Firestore centraliza catálogo, clientes, pedidos, cupones y registros. **Entrega:** Firebase Hosting publica recursos estáticos vía HTTPS y reescribe URLs desconocidas a `index.html` para SPA.
+| Capa | Responsabilidad |
+|---|---|
+| Angular | Catálogo, galería, bolsa, checkout, historial y panel. Conserva la bolsa de la demo en el navegador. |
+| Firebase Authentication | Cuentas y tokens. El desarrollo local usa el emulador. |
+| API REST | Valida la identidad, consulta el rol, valida entradas y aplica las reglas de compra y administración. |
+| PostgreSQL | Productos, fotos, stock por talla, pedidos, partidas, pagos simulados, solicitudes y auditoría. |
+| Proxy `/api` | Conecta Angular a Express. La guía separa el inicio local del alojamiento de producción. |
 
-## Límites del sistema
-La demostración utiliza precios, stock, envíos y pagos ficticios. No incorpora pasarela real, CFDI, logística externa ni app móvil independiente. Cloud Functions v2 exige Blaze. El acceso a Firestore desde cliente está denegado por regla general; se accede exclusivamente mediante API callable, incluso para lectura de catálogo.
+En la confirmación de pedido, la API verifica precio y stock, guarda el folio y registra el movimiento en una transacción. La clave idempotente identifica un intento por cliente y evita duplicados. El catálogo almacena fotos adicionales con posición y texto alternativo. Las operaciones administrativas comprueban el rol en la API.
 
-## Decisiones relevantes
-Las órdenes guardan copia de SKU, precio, cantidad y talla, preservando el precio histórico. Un pedido usa llave de idempotencia. El inventario se ajusta de manera transaccional. Se evita exponer `serviceAccount` o variables secretas en el repositorio. El rol admin se asigna únicamente desde consola privilegiada.
+[OpenAPI](../server/openapi.json) · [Modelo relacional](15_POSTGRES_OPERACION.md) · [Ficha técnica](12_FICHA_TECNICA.md)

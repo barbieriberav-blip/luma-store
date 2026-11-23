@@ -1,0 +1,314 @@
+{
+  "LUMA-001": {
+    "cover": "/assets/product-gallery/01-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/01-angulo.webp",
+        "alt": "Vista en ángulo de Blusa Satinada Alba"
+      },
+      {
+        "url": "/assets/product-gallery/01-detalle.webp",
+        "alt": "Detalle del acabado de Blusa Satinada Alba"
+      }
+    ]
+  },
+  "LUMA-002": {
+    "cover": "/assets/product-gallery/02-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/02-angulo.webp",
+        "alt": "Vista en ángulo de Jeans Wide Leg"
+      },
+      {
+        "url": "/assets/product-gallery/02-detalle.webp",
+        "alt": "Detalle del acabado de Jeans Wide Leg"
+      }
+    ]
+  },
+  "LUMA-003": {
+    "cover": "/assets/product-gallery/03-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/03-angulo.webp",
+        "alt": "Vista en ángulo de Hoodie Essential"
+      },
+      {
+        "url": "/assets/product-gallery/03-detalle.webp",
+        "alt": "Detalle del acabado de Hoodie Essential"
+      }
+    ]
+  },
+  "LUMA-004": {
+    "cover": "/assets/product-gallery/04-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/04-angulo.webp",
+        "alt": "Vista en ángulo de Cargo Wide"
+      },
+      {
+        "url": "/assets/product-gallery/04-detalle.webp",
+        "alt": "Detalle del acabado de Cargo Wide"
+      }
+    ]
+  },
+  "LUMA-005": {
+    "cover": "/assets/product-gallery/05-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/05-angulo.webp",
+        "alt": "Vista en ángulo de Collar Aurora Dorado"
+      },
+      {
+        "url": "/assets/product-gallery/05-detalle.webp",
+        "alt": "Detalle del acabado de Collar Aurora Dorado"
+      }
+    ]
+  },
+  "LUMA-006": {
+    "cover": "/assets/product-gallery/06-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/06-angulo.webp",
+        "alt": "Vista en ángulo de Top Básico Aura"
+      },
+      {
+        "url": "/assets/product-gallery/06-detalle.webp",
+        "alt": "Detalle del acabado de Top Básico Aura"
+      }
+    ]
+  },
+  "LUMA-007": {
+    "cover": "/assets/product-gallery/07-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/07-angulo.webp",
+        "alt": "Vista en ángulo de Blusa Casual Lino"
+      },
+      {
+        "url": "/assets/product-gallery/07-detalle.webp",
+        "alt": "Detalle del acabado de Blusa Casual Lino"
+      }
+    ]
+  },
+  "LUMA-008": {
+    "cover": "/assets/product-gallery/08-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/08-angulo.webp",
+        "alt": "Vista en ángulo de Pantalón Rosa Pastel"
+      },
+      {
+        "url": "/assets/product-gallery/08-detalle.webp",
+        "alt": "Detalle del acabado de Pantalón Rosa Pastel"
+      }
+    ]
+  },
+  "LUMA-009": {
+    "cover": "/assets/product-gallery/09-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/09-angulo.webp",
+        "alt": "Vista en ángulo de Short Denim Azul"
+      },
+      {
+        "url": "/assets/product-gallery/09-detalle.webp",
+        "alt": "Detalle del acabado de Short Denim Azul"
+      }
+    ]
+  },
+  "LUMA-010": {
+    "cover": "/assets/product-gallery/10-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/10-angulo.webp",
+        "alt": "Vista en ángulo de Short Casual Arena"
+      },
+      {
+        "url": "/assets/product-gallery/10-detalle.webp",
+        "alt": "Detalle del acabado de Short Casual Arena"
+      }
+    ]
+  },
+  "LUMA-011": {
+    "cover": "/assets/product-gallery/11-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/11-angulo.webp",
+        "alt": "Vista en ángulo de Hoodie Oversize Latte"
+      },
+      {
+        "url": "/assets/product-gallery/11-detalle.webp",
+        "alt": "Detalle del acabado de Hoodie Oversize Latte"
+      }
+    ]
+  },
+  "LUMA-012": {
+    "cover": "/assets/product-gallery/12-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/12-angulo.webp",
+        "alt": "Vista en ángulo de Suéter Cozy Marfil"
+      },
+      {
+        "url": "/assets/product-gallery/12-detalle.webp",
+        "alt": "Detalle del acabado de Suéter Cozy Marfil"
+      }
+    ]
+  },
+  "LUMA-013": {
+    "cover": "/assets/product-gallery/13-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/13-angulo.webp",
+        "alt": "Vista en ángulo de Cardigan Soft Beige"
+      },
+      {
+        "url": "/assets/product-gallery/13-detalle.webp",
+        "alt": "Detalle del acabado de Cardigan Soft Beige"
+      }
+    ]
+  },
+  "LUMA-014": {
+    "cover": "/assets/product-gallery/14-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/14-angulo.webp",
+        "alt": "Vista en ángulo de Calcetines Happy Set"
+      },
+      {
+        "url": "/assets/product-gallery/14-detalle.webp",
+        "alt": "Detalle del acabado de Calcetines Happy Set"
+      }
+    ]
+  },
+  "LUMA-015": {
+    "cover": "/assets/product-gallery/15-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/15-angulo.webp",
+        "alt": "Vista en ángulo de Tenis Urban Blanco"
+      },
+      {
+        "url": "/assets/product-gallery/15-detalle.webp",
+        "alt": "Detalle del acabado de Tenis Urban Blanco"
+      }
+    ]
+  },
+  "LUMA-016": {
+    "cover": "/assets/product-gallery/16-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/16-angulo.webp",
+        "alt": "Vista en ángulo de Bolso Mini City"
+      },
+      {
+        "url": "/assets/product-gallery/16-detalle.webp",
+        "alt": "Detalle del acabado de Bolso Mini City"
+      }
+    ]
+  },
+  "LUMA-017": {
+    "cover": "/assets/product-gallery/17-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/17-angulo.webp",
+        "alt": "Vista en ángulo de Aretes Brillo"
+      },
+      {
+        "url": "/assets/product-gallery/17-detalle.webp",
+        "alt": "Detalle del acabado de Aretes Brillo"
+      }
+    ]
+  },
+  "LUMA-018": {
+    "cover": "/assets/product-gallery/18-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/18-angulo.webp",
+        "alt": "Vista en ángulo de Vestido Noche Estelar"
+      },
+      {
+        "url": "/assets/product-gallery/18-detalle.webp",
+        "alt": "Detalle del acabado de Vestido Noche Estelar"
+      }
+    ]
+  },
+  "LUMA-019": {
+    "cover": "/assets/product-gallery/19-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/19-angulo.webp",
+        "alt": "Vista en ángulo de Vestido Floral Luz"
+      },
+      {
+        "url": "/assets/product-gallery/19-detalle.webp",
+        "alt": "Detalle del acabado de Vestido Floral Luz"
+      }
+    ]
+  },
+  "LUMA-020": {
+    "cover": "/assets/product-gallery/20-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/20-angulo.webp",
+        "alt": "Vista en ángulo de Tacones Classic"
+      },
+      {
+        "url": "/assets/product-gallery/20-detalle.webp",
+        "alt": "Detalle del acabado de Tacones Classic"
+      }
+    ]
+  },
+  "LUMA-021": {
+    "cover": "/assets/product-gallery/21-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/21-angulo.webp",
+        "alt": "Vista en ángulo de Pulsera Destello"
+      },
+      {
+        "url": "/assets/product-gallery/21-detalle.webp",
+        "alt": "Detalle del acabado de Pulsera Destello"
+      }
+    ]
+  },
+  "LUMA-022": {
+    "cover": "/assets/product-gallery/22-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/22-angulo.webp",
+        "alt": "Vista en ángulo de Blazer City Negro"
+      },
+      {
+        "url": "/assets/product-gallery/22-detalle.webp",
+        "alt": "Detalle del acabado de Blazer City Negro"
+      }
+    ]
+  },
+  "LUMA-023": {
+    "cover": "/assets/product-gallery/23-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/23-angulo.webp",
+        "alt": "Vista en ángulo de Jeans Rectos Classic"
+      },
+      {
+        "url": "/assets/product-gallery/23-detalle.webp",
+        "alt": "Detalle del acabado de Jeans Rectos Classic"
+      }
+    ]
+  },
+  "LUMA-024": {
+    "cover": "/assets/product-gallery/24-frente.webp",
+    "gallery": [
+      {
+        "url": "/assets/product-gallery/24-angulo.webp",
+        "alt": "Vista en ángulo de Bolso Tote Luna"
+      },
+      {
+        "url": "/assets/product-gallery/24-detalle.webp",
+        "alt": "Detalle del acabado de Bolso Tote Luna"
+      }
+    ]
+  }
+}

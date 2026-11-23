@@ -1,25 +1,28 @@
-# 03. Manual de la persona administradora
+# Manual de LUMA para administración
 
-## Acceso controlado
-El botón Panel aparece únicamente si la sesión tiene rol `admin`. El rol se consulta en Cloud Functions y no depende de esconder botones del navegador. Para elevar una cuenta, el propietario del Firebase edita `users/{uid}.role` en Firestore Console; los clientes no pueden escribir este dato.
+## Habilitar una cuenta de administración
 
-## Inicio de operaciones
-Si el catálogo está vacío, entra a Panel → Resumen y selecciona Cargar 24 productos de demostración. Solo debe ejecutarse una vez. A partir de entonces se gestiona el inventario persistente en Firestore.
+Registra una cuenta ficticia e inicia sesión para crear su perfil en PostgreSQL. Copia su UID desde el emulador de Firebase Authentication y ejecuta `npm.cmd --prefix server run admin -- UID_DE_FIREBASE` desde `proyecto_luma`. Cierra sesión y selecciona **Ingresar** para acceder nuevamente. El botón **Panel** aparece cuando la API confirma el rol.
+[Guía de instalación y operación](../server/README.md)
 
-## Catálogo
-- Nuevo producto: SKU único, nombre, descripción, categoría, imagen HTTPS, tallas, precio, stock, material y cuidado.
-- Modificar: los cambios de precio y stock quedan registrados con auditoría; el stock debe ser entero no negativo.
-- Desactivar: baja lógica; el producto desaparece del catálogo público sin eliminar sus datos históricos.
-- Categorías: agrega nombres nuevos con slug legible.
+## Catálogo y galería
 
-## Pedidos
-En la pestaña Pedidos se muestran folio, cliente, importe, fecha, estado y guía. Transiciones: Pagado → Preparando → Enviado → Entregado. También es posible cancelar desde estados permitidos; al hacerlo se restituye el inventario mediante transacción.
+La instalación carga 24 productos con tres vistas ilustrativas por ficha. Para editar, abre **Panel → Productos → Editar**. Ajusta SKU, precio y stock por talla. La portada se configura en **Foto**. En **Fotos adicionales**, puedes registrar hasta cinco enlaces HTTPS o rutas de imágenes dentro de `/assets/`, agregar su texto alternativo o quitar una foto. Guarda y vuelve a abrir la ficha pública para comprobar el orden.
 
-## Devoluciones
-Lee motivo y detalle, aprueba o rechaza con resolución motivada. La opción Reembolsada representa solo una compensación ficticia: actualiza estado de pedido y devuelve unidades al inventario, de forma atómica.
+Para preparar la demostración, ajusta **Stock talla M** de **Blusa Satinada Alba** a 8 antes de que la clienta compre dos unidades. Si el stock cambió mientras se editaba, cierra el formulario, recarga ese producto y repite el ajuste.
 
-## Promociones, atención y reportes
-Los cupones tienen código, porcentaje, compra mínima y límite de usos. La validación definitiva de cupón se ejecuta al confirmar la compra. La pestaña Atención muestra solicitudes, que pueden marcarse En revisión o Resuelta. Pedidos permite exportar un CSV para uso académico. Las pestañas Inventario/Auditoría registran entradas y salidas con actor y referencia.
+## Pedidos e inventario
 
-## Administración segura
-No uses datos reales ni publiques contraseñas. Mantén acceso Firebase Console restringido, habilita medidas fuertes de seguridad en la cuenta propietaria y supervisa costos, errores y reglas.
+1. Abre **Panel → Resumen → Movimientos de inventario**. Busca el folio de la compra y verifica una salida de **−2** para la talla M.
+   [Figura 6. Movimiento de venta](capturas-postgres/06-movimiento.webp)
+2. Abre **Pedidos** y localiza el mismo folio. Cambia el estado a **Preparando**, después **Enviado** y finalmente **Entregado**, guardando cada transición. La guía se puede registrar en esa misma fila.
+   [Figura 7. Folio en el panel de pedidos](capturas-postgres/07-panel-pedido.webp)
+3. Si el pedido aún se puede cancelar, el servidor revierte las unidades una sola vez. Si se entrega, utiliza la solicitud de devolución que registra la clienta.
+
+## Resolver una devolución
+
+Abre **Devoluciones**, localiza la solicitud y escribe una nota. Pulsa **Aprobar** o **Rechazar**. Para registrar el reembolso de prueba de una solicitud aprobada, pulsa **Reembolso de prueba** y verifica el estado. Las dos unidades de ese pedido se reincorporan al inventario.
+[Figura 8. Devolución reembolsada](capturas-postgres/08-devolucion.webp)
+
+En **Cupones** configura porcentaje, mínimo, usos y vigencia. En **Atención** puedes responder operativamente mediante el cambio de estado de la solicitud. **Pedidos** permite descargar el CSV y **Auditoría** muestra quién realizó los cambios.
+[Consultas de verificación y respaldo](15_POSTGRES_OPERACION.md)

@@ -1,6 +1,6 @@
 # LUMA STORE con PostgreSQL
 
-En esta edición, Angular muestra la tienda, Firebase Authentication identifica al usuario y la API Express registra la operación en PostgreSQL. Las cuentas de cliente y administración se prueban con datos ficticios. El catálogo inicial tiene 24 productos en 10 categorías.
+En esta edición, Angular muestra la tienda, Firebase Authentication identifica al usuario y la API Express registra la operación en PostgreSQL. Las cuentas de cliente y administración se prueban con datos ficticios. El catálogo inicial tiene 24 productos en 10 categorías y tres vistas ilustrativas por producto.
 
 ## Instalación local en Windows
 
@@ -20,7 +20,7 @@ Abre `server/.env` y ajusta `DATABASE_URL` y `POSTGRES_PASSWORD`. Para usar una 
 docker compose --env-file .\server\.env -f .\server\compose.yaml up -d
 ```
 
-Cuando PostgreSQL esté disponible, ejecuta `npm.cmd --prefix server run db:setup`. El comando aplica las migraciones y carga el catálogo inicial una vez. Repetirlo conserva los cambios operativos.
+Cuando PostgreSQL esté disponible, ejecuta `npm.cmd --prefix server run db:setup`. El comando aplica las migraciones y carga el catálogo inicial una vez. Repítelo si vienes de una edición anterior de PostgreSQL para incorporar la galería. La actualización agrega imágenes a los productos de muestra que conservan su foto original.
 
 Abre tres terminales en `proyecto_luma`, una por servicio:
 
@@ -46,6 +46,10 @@ Abre [LUMA en local](http://localhost:4201/). Comprueba [el estado de la API](ht
 - Con PostgreSQL y el emulador iniciados, ejecuta `npm.cmd --prefix server test`. La prueba crea un esquema PostgreSQL aislado y cuentas ficticias en el emulador. Verifica la compra, permisos, precios del servidor, idempotencia, rechazo por falta de stock, concurrencia, cupones, movimientos, reembolso y categorías.
 - [Contrato OpenAPI](openapi.json) contiene las rutas HTTP y un ejemplo de pedido. Los formularios de acceso y registro usan Firebase Authentication. La API valida el ID token y asigna los permisos administrativos a partir del UID registrado en SQL.
 - [Modelo de datos y continuidad](../docs/15_POSTGRES_OPERACION.md) incluye el diagrama relacional, consultas de verificación y el procedimiento de respaldo y restauración.
+
+## Entrega académica
+
+[Manual de compra](../docs/02_MANUAL_COMPRADOR.md) · [Manual del panel](../docs/03_MANUAL_ADMIN.md) · [Matriz de requisitos](../docs/08_REQUISITOS_Y_BACKLOG.md) · [Guion de exposición](../docs/13_PRESENTACION_Y_EVIDENCIAS.md) · [Matriz normativa](../docs/10_MARCO_LEGAL_Y_POLITICAS.md) · [Resultados y capturas](../docs/16_POSTGRES_EVIDENCIAS.md)
 
 ## Usar el proyecto Firebase existente
 

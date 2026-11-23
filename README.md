@@ -4,8 +4,11 @@ Repositorio académico de **LUMA STORE**, tienda virtual de ropa y accesorios pa
 
 ## Estructura
 
-- `documento/`: 13 entregables académicos en formato Word (`.docx`) y PDF (`.pdf`).
-- `proyecto_luma/`: última versión del proyecto LUMA preparada para Firebase Spark (sin Blaze), con Angular, Firebase Authentication, Cloud Firestore, reglas de seguridad y Firebase Hosting.
+- `proyecto_luma/`: edición académica con Angular, Firebase Authentication, Express y PostgreSQL.
+- `proyecto_luma/docs/`: requisitos, manuales, diagramas, pruebas, capturas y guion actualizados para PostgreSQL.
+- `documento/`: entregables de la edición anterior en Word y PDF.
+
+Empieza por la [guía de instalación](proyecto_luma/docs/01_GUIA_INSTALACION.md), la [matriz de requisitos](proyecto_luma/docs/08_REQUISITOS_Y_BACKLOG.md) y las [evidencias de la demostración](proyecto_luma/docs/16_POSTGRES_EVIDENCIAS.md).
 
 ## Alumna
 Barbara Ribera Vallejo
@@ -17,4 +20,4 @@ Temas Selectos de Tecnologías de la Información
 José Alfredo Medrano Vázquez
 
 ## Nota académica
-El flujo de pago es de demostración y no procesa cobros reales. La versión Spark no usa Cloud Functions.
+El pago es simulado. La demostración con PostgreSQL se ejecuta en local. La edición Spark publicada en Firebase Hosting usa Firestore.

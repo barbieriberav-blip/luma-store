@@ -9,6 +9,8 @@ export function categories(db, includeInactive = false) {
 export function products(db, includeInactive = false) {
   return rows(db,`SELECT p.id,p.category_id,c.name AS category,p.sku,p.name,p.description,p.material,p.care,
       p.price,p.image,p.badge,p.featured::int,p.active::int,
+      COALESCE((SELECT json_agg(json_build_object('url',i.url,'alt',i.alt) ORDER BY i.position)
+        FROM product_images i WHERE i.product_id=p.id), '[]') AS gallery,
       COALESCE(sum(v.stock),0)::int AS stock,
       COALESCE(array_agg(v.size ORDER BY v.id) FILTER (WHERE v.id IS NOT NULL), '{}') AS sizes,
       COALESCE(json_object_agg(v.size,v.stock) FILTER (WHERE v.id IS NOT NULL), '{}') AS stock_by_size
@@ -17,18 +19,38 @@ export function products(db, includeInactive = false) {
     WHERE $1 OR (p.active AND c.active) GROUP BY p.id,c.name ORDER BY p.id`,[includeInactive]);
 }
 
+function productGallery(value, cover) {
+  if (value === undefined) return undefined;
+  requireValue(Array.isArray(value) && value.length <= 5, 'Agrega hasta cinco fotos adicionales.');
+  const gallery = value.map(photo => {
+    const url = text(photo?.url,1000,1);
+    let valid = /^\/assets\/[a-z0-9][a-z0-9/_-]*\.(?:avif|gif|jpe?g|png|svg|webp)$/i.test(url);
+    if (!valid) {
+      const address = URL.parse(url);
+      valid = address?.protocol === 'https:' && Boolean(address.hostname) && !address.username && !address.password;
+    }
+    requireValue(valid, 'Usa un enlace HTTPS o una imagen de la carpeta /assets/.');
+    return { url, alt:text(photo?.alt,120,1) };
+  });
+  requireValue(new Set([cover, ...gallery.map(photo => photo.url)]).size === gallery.length + 1,
+    'Cada foto de la galería debe usar una imagen distinta.');
+  return gallery;
+}
+
 function productInput(body) {
   const { sizes, variantStock, expectedVariantStock } = body;
   requireValue(Array.isArray(sizes) && sizes.length && sizes.length <= 20, 'Ingresa de 1 a 20 tallas.');
   const cleanSizes = sizes.map(size => text(size,32,1));
   requireValue(new Set(cleanSizes).size === cleanSizes.length, 'Las tallas deben ser distintas.');
+  const cover = text(body.image,1000);
   return {
     fields: [
       integer(body.categoryId),text(body.sku,40,3),text(body.name,100,3),text(body.description,2000),
       text(body.material,120),text(body.care,120),integer(body.price,0,1000000),
-      text(body.image,1000),text(body.badge,40),body.featured === true,body.active === true,
+      cover,text(body.badge,40),body.featured === true,body.active === true,
     ],
     cleanSizes,
+    gallery:productGallery(body.gallery,cover),
     variantStock,
     expectedVariantStock,
     stock: integer(body.stock,0,1000000),
@@ -48,6 +70,14 @@ export async function saveProduct(pool, id, actor, body) {
       ({ id } = await first(db,`INSERT INTO products
         (category_id,sku,name,description,material,care,price,image,badge,featured,active)
         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING id`,input.fields));
+    }
+
+    if (input.gallery !== undefined) {
+      await db.query('DELETE FROM product_images WHERE product_id=$1',[id]);
+      for (const [index,photo] of input.gallery.entries()) {
+        await db.query('INSERT INTO product_images (product_id,position,url,alt) VALUES ($1,$2,$3,$4)',
+          [id,index+1,photo.url,photo.alt]);
+      }
     }
 
     const oldVariants = await rows(db,'SELECT id,size,stock,active FROM product_variants WHERE product_id=$1 ORDER BY id FOR UPDATE',[id]);

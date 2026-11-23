@@ -1,41 +1,38 @@
-# 08. Requisitos y backlog (Firebase)
+# 08. Requisitos y evidencias de LUMA STORE
 
-## Identificación
-LUMA STORE es un comercio electrónico B2C simulado de ropa y accesorios para mujer. El frontend Angular consulta una función `lumaApi` desplegada en Firebase, que accede a Firestore y verifica roles de Firebase Authentication. El alcance no incluye cobro bancario real ni logística física.
+LUMA STORE simula un comercio B2C de ropa y accesorios. Esta matriz corresponde a la edición académica con Angular, Express, PostgreSQL y Firebase Authentication, instalada en local según la [guía de instalación](01_GUIA_INSTALACION.md).
 
 ## Requisitos funcionales
 
-| ID | Funcionalidad | Verificación |
+| ID | Funcionalidad | Evidencia |
 |---|---|---|
-| RF-01 | Catálogo con 15+ productos y tres o más categorías | Semilla con 24 productos y 10 categorías |
-| RF-02 | Buscar y filtrar | Búsqueda, categoría, stock y precio visibles |
-| RF-03 | Ver detalle con talla, precio y existencias | Modal de producto |
-| RF-04 | Carrito editable y subtotal | Modificar cantidad, eliminar línea |
-| RF-05 | Registro y login mediante Firebase Authentication | Sesión persistente |
-| RF-06 | Checkout de simulación con domicilio y términos | Folio único de pedido |
-| RF-07 | Cálculo de totales exclusivamente en Cloud Functions | Manipular subtotal en cliente no altera pedido |
-| RF-08 | Comprobar y actualizar inventario atómicamente | Firestore transacciones |
-| RF-09 | Consultar pedidos propios | Cloud Function restringe por UID |
-| RF-10 | Solicitar devolución | Estado y folio |
-| RF-11 | Administrar productos, cupones y estados | Rol `admin` verificado por servidor |
-| RF-12 | Exportar informe CSV | Solo rol admin |
-| RF-13 | Publicar HTTPS en Firebase Hosting | URL real de despliegue, pendiente de propietaria |
+| RF-01 | Consultar catálogo, buscar y filtrar por categoría, disponibilidad y precio | [Catálogo de 24 productos](capturas-postgres/01-catalogo.webp) y casos de [aceptación](16_POSTGRES_EVIDENCIAS.md) |
+| RF-02 | Ver la ficha, variante, material, existencias e imágenes | [Galería](capturas-postgres/02-galeria.webp), [migración](../server/migrations/002_product_gallery.sql) y API-08 |
+| RF-03 | Agregar, editar y quitar artículos, y consultar el subtotal | [Carrito](capturas-postgres/03-carrito.webp) y [manual comprador](02_MANUAL_COMPRADOR.md) |
+| RF-04 | Registrar una cuenta, iniciar y cerrar sesión | API-01, UI-01 y UI-04 del [registro de evidencias](16_POSTGRES_EVIDENCIAS.md) |
+| RF-05 | Confirmar un pedido con entrega, aceptación de términos y pago simulado | [Checkout](capturas-postgres/04-checkout.webp), [folio](capturas-postgres/05-folio.webp) y API-02 |
+| RF-06 | Calcular importes en servidor y proteger inventario ante sobreventa o reintentos | [Contrato de API](../server/openapi.json) y casos API-02 a API-04 |
+| RF-07 | Consultar pedidos propios, estado y guía cuando esté registrada | [Manual comprador](02_MANUAL_COMPRADOR.md), API-05 y UI-01 |
+| RF-08 | Solicitar cancelación, devolución o garantía y seguir la resolución | [Devolución resuelta](capturas-postgres/08-devolucion.webp), API-06 y UI-02 |
+| RF-09 | Administrar categorías, catálogo, variantes, existencias y promociones | [Manual de administración](03_MANUAL_ADMIN.md), API-07 y API-08 |
+| RF-10 | Administrar pedidos, revisar clientes, movimientos y reportes | [Panel](capturas-postgres/07-panel-pedido.webp), [movimiento](capturas-postgres/06-movimiento.webp), API-07 y UI-01 |
+| RF-11 | Consultar políticas antes de comprar y disponer de un canal de atención de prueba | [Matriz legal](10_MARCO_LEGAL_Y_POLITICAS.md) y [aviso de privacidad](capturas-postgres/09-privacidad.webp) |
 
-## Requisitos no funcionales
+## Requisitos de calidad y documentación
 
-| ID | Atributo | Meta |
+| ID | Requisito | Evidencia o estado |
 |---|---|---|
-| RNF-01 | Responsive | Ancho desde 360 px y escritorio |
-| RNF-02 | Seguridad | Reglas Firestore sin acceso directo; funciones por rol |
-| RNF-03 | Persistencia | Usuarios en Auth, documentos en Firestore |
-| RNF-04 | Coherencia | Transacciones para inventario y pedidos |
-| RNF-05 | Usabilidad | Mensajes de error, estado vacío y cargas |
-| RNF-06 | Mantenibilidad | Separación en Angular / Functions / docs |
-| RNF-07 | Recuperación | Plan de exportación y restauración, pendiente de evidencia |
-| RNF-08 | Privacidad | No guardar CVV, números de tarjeta ni contraseñas |
+| RNF-01 | Interfaz adaptable con teclado, foco visible y textos alternativos | UI-03 y UI-04 del [registro de evidencias](16_POSTGRES_EVIDENCIAS.md) |
+| RNF-02 | Probar con personas y registrar hallazgos de uso | [Protocolo de cinco tareas](17_PRUEBA_USABILIDAD.md). Sesión pendiente |
+| RNF-03 | Disponibilidad, respaldo y recuperación | [Plan de continuidad](14_CONTINUIDAD_Y_RESPALDOS.md), [operación de PostgreSQL](15_POSTGRES_OPERACION.md) y BD-01 |
+| RNF-04 | Control de acceso por rol, validación en servidor y protección de datos | API-02 a API-05, [arquitectura](05_ARQUITECTURA.md) y [plan de pruebas](11_PLAN_PRUEBAS.md) |
+| RNF-05 | Modelo relacional, migraciones e instalación reproducible | [Modelo y diccionario](04_BASE_DE_DATOS.md), [migraciones](../server/migrations) y [manual técnico](../server/README.md) |
+| RNF-06 | Identidad visual, alcance del negocio y recursos del catálogo | [Análisis del negocio](07_ANALISIS_NEGOCIO.md), [diseño](09_DISENO_UX_UI.md) y [ficha técnica](12_FICHA_TECNICA.md) |
+| RNF-07 | Medición de rendimiento en navegador | Consulta el [registro de evidencias](16_POSTGRES_EVIDENCIAS.md) |
+| RNF-08 | Reproducir la compra y administración durante la defensa | [Guion de exposición](13_PRESENTACION_Y_EVIDENCIAS.md) y [manual de administración](03_MANUAL_ADMIN.md) |
 
-## Priorización
-**P0**: publicar frontend, autenticar, catálogo, carrito, compra simulada, stock, pedidos y acceso admin. **P1**: devoluciones, cupones, informes, contacto y auditoría. **P2**: accesibilidad avanzada, UX móvil, respaldos periódicos y validación jurídica final. Los casos de aceptación del docente siguen requiriendo pruebas con capturas reales en la instancia de Firebase seleccionada.
+## Backlog de cierre
 
-## Dependencias críticas
-No puede haber despliegue público sin cuenta/proyecto autorizado. Cloud Functions v2 requiere habilitar Blaze. Antes de la demostración hay que registrar y configurar la app Firebase Web, asignar un administrador desde consola y cargar el catálogo semilla.
+1. Realizar la sesión de usabilidad con una persona ajena al desarrollo y documentar hallazgos.
+2. Verificar la recuperación de contraseña en el entorno de autenticación que se vaya a presentar.
+3. Si se elige presentar esta edición en una URL pública, desplegar la API por HTTPS, conectar PostgreSQL y repetir las pruebas de compra, roles y restauración en ese entorno.

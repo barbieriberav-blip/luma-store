@@ -4,11 +4,13 @@ import {Component,computed,effect,linkedSignal,OnInit,signal} from '@angular/cor
 import {firebaseErrorMessage} from './firebase-client';
 import {USE_POSTGRES_API} from '../environments/store.config';
 import {postgresRequest} from './postgres-api';
+import {ProductGallery, type ProductPhoto} from './product-gallery';
+import {StoreModal} from './store-modal';
 import {ORDER_MAX_LINES,ORDER_MAX_LINE_QUANTITY,sparkRequest} from './spark-api';
 
 type Page='inicio'|'catalogo'|'carrito'|'checkout'|'cuenta'|'admin'|'ayuda'|'politicas'|'nosotros'|'gracias';
 type AuthMode='login'|'register';
-interface Product {id:number;sku:string;name:string;description:string;category:string;category_id:number;price:number;stock:number;stock_by_size?:Record<string,number>;sizes:string[];image:string;badge:string;featured:number;material:string;care:string;active:number;}
+interface Product {id:number;sku:string;name:string;description:string;category:string;category_id:number;price:number;stock:number;stock_by_size?:Record<string,number>;sizes:string[];image:string;gallery?:ProductPhoto[];badge:string;featured:number;material:string;care:string;active:number;}
 interface Category {id:number;name:string;slug:string;active?:number;}
 interface CartLine {productId:number;quantity:number;size:string;}
 interface CartView extends CartLine {product:Product;lineTotal:number;}
@@ -22,7 +24,7 @@ const blankProduct=()=>({sku:'',name:'',description:'',material:'',care:'',price
 const blankAddress=()=>({recipient:'',street:'',neighborhood:'',city:'',state:'Tamaulipas',postalCode:'',phone:''});
 function jsonStorage<T>(key:string,fallback:T):T{try{const raw=localStorage.getItem(key);return raw?JSON.parse(raw):fallback}catch{return fallback}}
 
-@Component({selector:'app-root',standalone:true,imports:[CommonModule,FormsModule],templateUrl:'./app.html',styleUrl:'./app.css'})
+@Component({selector:'app-root',standalone:true,imports:[CommonModule,FormsModule,ProductGallery,StoreModal],templateUrl:'./app.html',styleUrl:'./app.css'})
 export class App implements OnInit {
  page=signal<Page>('inicio');
  products=signal<Product[]>([]);categories=signal<Category[]>([]);
@@ -36,7 +38,7 @@ export class App implements OnInit {
  checkoutAddress=blankAddress();shippingType=signal('estandar');couponInput='';couponApplied=signal('');couponDiscount=signal(0);termsAccepted=false;submitBusy=signal(false);idempotencyKey='';
  notice=signal('');error=signal('');busy=signal(false);lastOrder=signal<Order|null>(null);
  selectedPolicy=signal('envios');faqOpen=signal(0);contactForm={name:'',email:'',message:''};
- admin=signal<AdminData|null>(null);adminTab=signal('resumen');productEditor=signal(false);editProductId=signal<number|null>(null);productForm=blankProduct();categoryName='';editingCategory=signal<Category|null>(null);variantStock:Record<string,number>={};private originalVariantStock:Record<string,number>={};couponForm={code:'',percent:10,minimum:500,maxUses:100,expiresAt:''};
+ admin=signal<AdminData|null>(null);adminTab=signal('resumen');productEditor=signal(false);editProductId=signal<number|null>(null);productForm=blankProduct();productPhotos:ProductPhoto[]=[];categoryName='';editingCategory=signal<Category|null>(null);variantStock:Record<string,number>={};private originalVariantStock:Record<string,number>={};couponForm={code:'',percent:10,minimum:500,maxUses:100,expiresAt:''};
  returnOrderId=signal<number|null>(null);returnForm={kind:'devolucion',reason:'Talla incorrecta',detail:''};
  readonly siteCategories=computed(()=>[...new Set(['Todos',...this.categories().map(c=>c.name),...this.products().map(p=>p.category)])]);
  readonly favorites=computed(()=>this.account()?this.accountFavorites():this.guestFavorites());
@@ -189,13 +191,17 @@ export class App implements OnInit {
  async sendReturn(){if(!this.returnOrderId())return;try{await this.request('/returns','POST',{orderId:this.returnOrderId(),...this.returnForm});this.returnOrderId.set(null);await this.loadAccount();this.tell('Tu solicitud quedó registrada y tiene un folio de seguimiento')}catch(e){this.fail(e)}}
  policy(tab:string){this.selectedPolicy.set(tab);this.go('politicas')}
  async sendContact(){try{const r=await this.request<{folio:string}>('/contact','POST',this.contactForm);this.tell('Solicitud registrada · '+r.folio+' (demo académica)');this.contactForm={name:'',email:'',message:''}}catch(e){this.fail(e)}}
+ openAdminTab(tab:string){
+  this.adminTab.set(tab);
+  void this.loadAdmin();
+ }
  async loadAdmin(){if(this.account()?.role!=='admin'){this.fail(new Error('Necesitas una cuenta administrativa'));return}try{const data=await this.request<AdminData>('/admin/overview');this.admin.set(data)}catch(e){this.fail(e)}}
- startProduct(p?:Product){this.editProductId.set(p?.id??null);this.originalVariantStock={...p?.stock_by_size};this.variantStock={...this.originalVariantStock};this.productForm=p?{sku:p.sku,name:p.name,description:p.description,material:p.material,care:p.care,price:p.price,stock:p.stock,categoryId:p.category_id,sizesText:p.sizes.join(', '),image:p.image,badge:p.badge,featured:!!p.featured,active:!!p.active}:blankProduct();this.productEditor.set(true)}
+ startProduct(p?:Product){this.productPhotos=(p?.gallery ?? []).map(photo=>({...photo}));this.editProductId.set(p?.id??null);this.originalVariantStock={...p?.stock_by_size};this.variantStock={...this.originalVariantStock};this.productForm=p?{sku:p.sku,name:p.name,description:p.description,material:p.material,care:p.care,price:p.price,stock:p.stock,categoryId:p.category_id,sizesText:p.sizes.join(', '),image:p.image,badge:p.badge,featured:!!p.featured,active:!!p.active}:blankProduct();this.productEditor.set(true)}
  async saveProduct(){try{
   const sizes=this.productSizes();
   const variantStock=Object.fromEntries(sizes.filter(size=>Object.hasOwn(this.variantStock,size)&&
     this.variantStock[size]!==this.originalVariantStock[size]).map(size=>[size,this.variantStock[size]]));
-  const form={...this.productForm,sizes,...(this.usePostgres?{variantStock,expectedVariantStock:this.originalVariantStock}:{})};if(this.editProductId())await this.request('/admin/products/'+this.editProductId(),'PATCH',form);else await this.request('/admin/products','POST',form);this.productEditor.set(false);await Promise.all([this.loadAdmin(),this.loadCatalog()]);this.tell('Producto guardado correctamente')}catch(e){this.fail(e)}}
+  const form={...this.productForm,sizes,...(this.usePostgres?{variantStock,expectedVariantStock:this.originalVariantStock,gallery:this.productPhotos}:{})};if(this.editProductId())await this.request('/admin/products/'+this.editProductId(),'PATCH',form);else await this.request('/admin/products','POST',form);this.productEditor.set(false);await Promise.all([this.loadAdmin(),this.loadCatalog()]);this.tell('Producto guardado correctamente')}catch(e){this.fail(e)}}
  async deleteProduct(p:Product){if(!confirm('¿Dar de baja este producto del catálogo?'))return;try{await this.request('/admin/products/'+p.id,'DELETE',{});await Promise.all([this.loadAdmin(),this.loadCatalog()]);this.tell('Producto desactivado')}catch(e){this.fail(e)}}
  async createCategory(){try{await this.request('/admin/categories','POST',{name:this.categoryName});this.categoryName='';await Promise.all([this.loadAdmin(),this.loadCatalog()]);this.tell('Categoría registrada')}catch(e){this.fail(e)}}
  selectCategory(category:Category){

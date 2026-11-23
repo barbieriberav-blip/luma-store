@@ -1,30 +1,21 @@
-# 01. Guía de instalación y publicación
+# Guía de instalación y demostración
 
-**LUMA STORE | Firebase | Versión académica 2.0 | 20/11/2026**
+La [guía principal de PostgreSQL](../server/README.md) contiene los comandos completos para Windows. Requiere Node.js 24, Git y PostgreSQL 17 o posterior. Se puede usar PostgreSQL instalado en Windows o el archivo Compose incluido.
 
-## Finalidad
-Instalar y desplegar el proyecto de tienda virtual con Angular 22, Firebase Authentication, Cloud Firestore, Cloud Functions v2 y Firebase Hosting. La publicación no se produce al descomprimir el archivo; exige un proyecto Firebase, autorización y ejecución desde la cuenta propietaria.
-
-## Requisitos
-Windows con Node.js LTS compatible (el entorno de trabajo del proyecto utiliza Node.js 24), npm, Visual Studio Code, conexión a internet y cuenta Google. Cloud Functions exige habilitar facturación Blaze. Se recomienda configurar alertas de presupuesto y usar datos académicos ficticios.
-
-## Instalación local
-Desde la carpeta que contiene `package.json`: `npm.cmd install` y luego `npm.cmd start`. La interfaz se presenta en http://localhost:4200. Antes de configurar Firebase, la tienda solo mostrará el catálogo de vista previa; no procesa datos personales ni pedidos. Detén otro servidor que use el puerto 4200.
-
-## Activación Firebase
-1. En Firebase Console, crea un proyecto único.
-2. Authentication: habilita email y contraseña.
-3. Firestore: crea base de datos, con reglas de seguridad del repositorio.
-4. Configuración del proyecto: registra la aplicación web y copia sus valores en `src/environments/firebase.config.ts`.
-5. Cambia a Blaze únicamente cuando apruebes expresamente la facturación.
-6. Instala Firebase CLI: `npm.cmd install -g firebase-tools`.
-7. Autentícate: `firebase.cmd login`; elige proyecto: `firebase.cmd use --add`.
-8. Instala funciones: `npm.cmd --prefix functions install`.
-9. Ejecuta pruebas `npm.cmd test`, compila `npm.cmd run build`.
-10. Despliega `firebase.cmd deploy --only firestore,functions,hosting`.
-
-## Primer administrador y catálogo
-La administradora se registra con correo y contraseña en la tienda. El propietario del Firebase cambia el campo `users/{uid}.role` desde `cliente` a `admin` desde la consola. Al iniciar sesión de nuevo, el panel de administración permitirá cargar 24 productos y 10 categorías con el botón de catálogo de ejemplo. No compartir credenciales de servicio.
+1. Desde `proyecto_luma`, ejecuta `npm.cmd ci` y `npm.cmd ci --prefix server`.
+2. Copia `server/.env.example` como `server/.env`, configura la conexión local y ejecuta `npm.cmd --prefix server run db:setup`.
+3. Inicia el emulador de Firebase Authentication, la API Express y Angular en las tres terminales indicadas en la guía.
+4. Abre [la tienda local](http://localhost:4201/) y comprueba [el estado de la API](http://localhost:4201/api/health).
+5. Prepara las cuentas ficticias con [el manual de administración](03_MANUAL_ADMIN.md). Usa [el guion](13_PRESENTACION_Y_EVIDENCIAS.md) para el ejercicio de compra.
 
 ## Diagnóstico
-Si aparece `ENOENT package.json`: entra en la carpeta que contiene el proyecto. Si falla la app: instala dependencias. Si Firebase no conecta: revisa la configuración web y la activación de Authentication y Cloud Functions. Si aparece `permission-denied`: inicia sesión y verifica rol de administrador. Si `functions/not-found`: comprueba que se desplegó `lumaApi` en `us-central1`. Si Hosting muestra página inicial: compila y publica de nuevo; la carpeta configurada es `dist/luma-angular/browser`.
+
+| Síntoma | Qué revisar |
+|---|---|
+| El comando no encuentra `package.json` | Entra a `proyecto_luma` antes de ejecutar las instrucciones. |
+| El catálogo no carga | Confirma que PostgreSQL y la API están iniciados, que el puerto 3000 está libre y que `/api/health` responde. |
+| El registro no abre sesión | Confirma el emulador de Auth en el puerto 9099 y que se inició Angular con `dev:postgres:demo`. |
+| La sesión no muestra el Panel | Registra el UID exacto y vuelve a ingresar a la cuenta de administración. |
+| La galería antigua muestra solo una imagen | Ejecuta `npm.cmd --prefix server run db:setup` para aplicar la migración. |
+
+Para alojar la edición con PostgreSQL se requiere una API accesible por HTTPS y una conexión con la base. [Configuración de despliegue](../server/README.md#usar-el-proyecto-firebase-existente)
