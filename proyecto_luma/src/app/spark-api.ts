@@ -3,7 +3,7 @@
  * autoritativa de precios: para comercio real se requiere un backend seguro.
  */
 import {FirebaseError} from 'firebase/app';
-import {createUserWithEmailAndPassword,sendPasswordResetEmail,signInWithEmailAndPassword,signOut,updateProfile} from 'firebase/auth';
+import {isStoreAuth,storeAuth} from './store-auth';
 import {collection,doc,getDoc,getDocFromServer,getDocs,query,where,setDoc,updateDoc,addDoc,writeBatch,runTransaction,arrayUnion,arrayRemove,increment} from 'firebase/firestore';
 import {currentAuth,currentDb,firebaseReady} from './firebase-client';
 
@@ -71,33 +71,7 @@ export async function sparkRequest<T>(path:string,method='GET',payload?:unknown)
   throw new Error('El servicio de cuentas y pedidos de LUMA requiere configuración en Firebase.');
  }
  const auth=currentAuth();await auth.authStateReady();
- if(path==='/auth/register'&&method==='POST'){
-  const name=String(b.name??'').trim();
-  const email=String(b.email??'').trim();
-  const password=String(b.password??'');
-  check(name.length>=2&&name.length<=80,'Ingresa un nombre de entre 2 y 80 caracteres');
-  check(password.length>=10,'La contraseña debe tener al menos 10 caracteres');
-  const credential=await createUserWithEmailAndPassword(auth,email,password);
-  try{
-   await updateProfile(credential.user,{displayName:name});
-   return {user:await ensureUser()} as T;
-  }catch{
-   await signOut(auth).catch(()=>{});
-   throw new Error('Tu cuenta se creó, pero el perfil quedó pendiente. Inicia sesión para completar el acceso.');
-  }
- }
- if(path==='/auth/login'&&method==='POST'){
-  await signInWithEmailAndPassword(auth,String(b.email??'').trim(),String(b.password??''));
-  try{return {user:await ensureUser()} as T;}
-  catch(error){await signOut(auth).catch(()=>{});throw error;}
- }
- if(path==='/auth/logout'&&method==='POST'){await signOut(auth);return {ok:true} as T;}
- if(path==='/auth/recover'&&method==='POST'){
-  try{await sendPasswordResetEmail(auth,String(b.email??'').trim());}
-  catch(error){if(!(error instanceof FirebaseError)||error.code!=='auth/user-not-found')throw error;}
-  return {message:'Si la cuenta existe, Firebase enviará las instrucciones de recuperación a tu correo.'} as T;
- }
- if(path==='/auth/me'&&method==='GET')return {user:await ensureUser()} as T;
+ if(isStoreAuth(path,method))return await storeAuth(path,method,payload,async()=>({user:await ensureUser()})) as T;
  if(path==='/auth/profile'&&method==='POST'){
   const u=await ensureUser();check(u,'Inicia sesión para modificar tu perfil');const name=clean(b.name,80);
   check(name.length>=2,'Escribe tu nombre');await updateDoc(doc(db!,'users',u!.id),{name});

@@ -1,5 +1,7 @@
 # LUMA STORE — vinculación con Firebase sin Blaze
 
+**Para la entrega con API, inventario transaccional y PostgreSQL**, abre la [guía de instalación y demostración](server/README.md).
+
 Esta edición viene con **backend de demostración para Firebase Authentication y Cloud Firestore**, además de **Firebase Hosting** para publicar la web. No despliega Cloud Functions ni solicita activar Blaze.
 
 ## Pasos en Windows (la forma más fácil)

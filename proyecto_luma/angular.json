@@ -15,19 +15,79 @@
             "browser": "src/main.ts",
             "index": "src/index.html",
             "tsConfig": "tsconfig.app.json",
-            "assets": [{"glob":"**/*","input":"src/assets","output":"assets"}],
-            "styles": ["src/styles.css"],
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets"
+              }
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
             "outputPath": "dist/luma-angular"
           },
           "configurations": {
-            "production": {"budgets":[{"type":"initial","maximumWarning":"1mb","maximumError":"2mb"}],"outputHashing":"all"},
-            "development": {"optimization":false,"extractLicenses":false,"sourceMap":true}
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "1mb",
+                  "maximumError": "2mb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
+            "postgres": {
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/store.config.ts",
+                  "with": "src/environments/store.postgres.config.ts"
+                }
+              ]
+            },
+            "postgres-demo": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/store.config.ts",
+                  "with": "src/environments/store.postgres.config.ts"
+                },
+                {
+                  "replace": "src/environments/firebase.config.ts",
+                  "with": "src/environments/firebase.postgres-demo.config.ts"
+                }
+              ]
+            }
           },
           "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular/build:dev-server",
-          "configurations": {"production":{"buildTarget":"luma-angular:build:production"},"development":{"buildTarget":"luma-angular:build:development"}},
+          "configurations": {
+            "production": {
+              "buildTarget": "luma-angular:build:production"
+            },
+            "development": {
+              "buildTarget": "luma-angular:build:development"
+            },
+            "postgres": {
+              "buildTarget": "luma-angular:build:postgres",
+              "proxyConfig": "proxy.postgres.json"
+            },
+            "postgres-demo": {
+              "buildTarget": "luma-angular:build:postgres-demo",
+              "proxyConfig": "proxy.postgres.json"
+            }
+          },
           "defaultConfiguration": "development"
         }
       }

@@ -1,0 +1,17 @@
+{
+  "name": "luma-store-api",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env index.mjs",
+    "db:setup": "node --env-file-if-exists=.env setup.mjs",
+    "admin": "node --env-file-if-exists=.env grant-admin.mjs",
+    "test": "node --env-file-if-exists=.env --test"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "firebase-admin": "^13.5.0",
+    "pg": "^8.16.3"
+  }
+}
