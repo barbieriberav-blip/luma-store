@@ -12,7 +12,7 @@
 | API-06 | Entregar un pedido, resolver una garantía y repetir el reembolso. Cancelar otro pedido antes de enviarlo | Se devuelve el inventario una vez por pedido. El cliente ve el estado de su solicitud | `npm --prefix server test` |
 | API-07 | Usar un cupón, gestionar categorías y consultar el reporte | Uso, descuento, altas, edición, baja y filas del reporte registrados | `npm --prefix server test` |
 | BD-01 | Exportar una base con un pedido y restaurar en una base nueva | Coincidieron los datos de pedidos, partidas, movimientos, 78 variantes, pagos y usuarios | Procedimiento con `pg_dump` y `pg_restore` en [Modelo y continuidad](15_POSTGRES_OPERACION.md) |
-| UI-01 | Abrir la app local en Chromium, registrar una cuenta y completar el checkout | Catálogo paginado, pedido con folio, historial y reducción por talla verificados | Pasos de [la guía de operación](../server/README.md) |
+| UI-01 | Abrir la app local en Chromium, registrar una cuenta y completar el checkout | Catálogo paginado, compra e historial verificados. En otra sesión, la administradora encontró el mismo folio y el movimiento de −2. El catálogo se comprobó a 360 px | Pasos de [la guía de operación](../server/README.md) |
 | BUILD-01 | Instalar dependencias desde el archivo de bloqueo y compilar | Compilaciones de Angular para Spark y PostgreSQL de demostración completadas | `npm ci`, `npm run build` y `npm run build -- --configuration postgres-demo` |
 
 ## Evidencias pendientes de la rúbrica
